@@ -17,16 +17,49 @@ const FavoritosController = require('../controllers/favoritosController');
 
 //definição de rotas
 router.get('/usuarios', UsuariosController.listarUsuarios);
+//cadastrar
+//editar
+//excluir
 router.get('/cidades', CidadesController.listarCidades);
+//cadastrar
+//editar
+//excluir
 router.get('/categorias', CategoriasController.listarCategorias);
+//cadastrar
+//editar
+//excluir
 router.get('/estabelecimentos', EstabelecimentosController.listarEstabelecimentos);
+//cadastrar
+//editar
+//excluir
 router.get('/produtos', ProdutosController.listarProdutos);
+//cadastrar
+//editar
+//excluir
 router.get('/links', LinksController.listarLinks);
+//cadastrar
+//editar
+//excluir
 router.get('/tamanhos', TamanhosController.listarTamanhos);
+//cadastrar
+//editar
+//excluir
 router.get('/telefones', TelefonesController.listarTelefones);
+//cadastrar
+//editar
+//excluir
 router.get('/ingredientes', IngredientesController.listarIngredientes);
+//cadastrar
+//editar
+//excluir
 router.get('/proding', ProdIngController.listarProdIng);
+//cadastrar
+//editar
+//excluir
 router.get('/favoritos', FavoritosController.listarFavoritos);
+//cadastrar
+//editar
+//excluir
 
 
 module.exports = router;
