@@ -17,15 +17,15 @@ module.exports = {
     },
     async create(request, response){
         try{
-            const {estNome, estEndereco, estLogo, usu_Id, cid_Id} = request.body;
+            const {igtId, igtNome} = request.body;
 
             const sql = 'INSERT INTO ingredientes (igtId, igtNome) VALUES (?,?)';
             const values = [igtId, igtNome];
             const confirmacao = await db.query(sql, values);
 
-            const estId = confirmacao[0].insertId;
+            const ingtId = confirmacao[0].insertId;
 
-            return response.status(200).json({confirma: 'Sucesso', message: estId});
+            return response.status(200).json({confirma: 'Sucesso', message: ingtId});
         } catch (error){
             return response.status(500).json({confirma: 'Erro', message: error});
         }

@@ -46,10 +46,10 @@ router.get('/tamanhos', TamanhosController.listarTamanhos);
 //excluir
 router.get('/telefones', TelefonesController.listarTelefones);
 router.post('/telefones', TelefonesController.create);
-//editar
+router.patch('/telefones/:telId', TelefonesController.update);
 //excluir
 router.get('/ingredientes', IngredientesController.listarIngredientes);
-//cadastrar
+router.post('/ingredientes', IngredientesController.create);
 //editar
 //excluir
 router.get('/proding', ProdIngController.listarProdIng);
