@@ -15,4 +15,20 @@ module.exports = {
             return response.status(500).json({confirma: 'Erro', message: error});
         }
     },
+    async create(request, response){
+        try{
+            const {estNome, estEndereco, estLogo, usu_Id, cid_Id} = request.body;
+
+            const sql = 'INSERT INTO telefones (telId, telEstabelecimento, est_Id, telObservacao) VALUES (?,?,?,?)';
+            const values = [telId, telEstabelecimento, est_Id, telObservacao];
+            const confirmacao = await db.query(sql, values);
+
+            const estId = confirmacao[0].insertId;
+
+            return response.status(200).json({confirma: 'Sucesso', message: estId});
+        } catch (error){
+            return response.status(500).json({confirma: 'Erro', message: error});
+        }
+
+    },
 };

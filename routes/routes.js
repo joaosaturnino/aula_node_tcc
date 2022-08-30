@@ -29,7 +29,7 @@ router.get('/categorias', CategoriasController.listarCategorias);
 //editar
 //excluir
 router.get('/estabelecimentos', EstabelecimentosController.listarEstabelecimentos);
-//cadastrar
+router.post('/estabelecimentos', EstabelecimentosController.create);
 //editar
 //excluir
 router.get('/produtos', ProdutosController.listarProdutos);
@@ -45,7 +45,7 @@ router.get('/tamanhos', TamanhosController.listarTamanhos);
 //editar
 //excluir
 router.get('/telefones', TelefonesController.listarTelefones);
-//cadastrar
+router.post('/telefones', TelefonesController.create);
 //editar
 //excluir
 router.get('/ingredientes', IngredientesController.listarIngredientes);
