@@ -14,6 +14,7 @@ const TelefonesController = require('../controllers/telefonesController');
 const IngredientesController = require('../controllers/ingredientesController');
 const ProdIngController = require('../controllers/prod_ingController');
 const FavoritosController = require('../controllers/favoritosController');
+const cidadesController = require("../controllers/cidadesController");
 
 //definição de rotas
 router.get('/usuarios', UsuariosController.listarUsuarios);
@@ -37,6 +38,8 @@ router.get('/produtos', ProdutosController.listarProdutos);
 //editar
 //excluir
 router.get('/links', LinksController.listarLinks);
+router.post('/links', LinksController.create);
+router.patch('/links/:lnkId', LinksController.update);
 //cadastrar
 //editar
 //excluir
