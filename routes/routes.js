@@ -26,7 +26,7 @@ router.get('/cidades', CidadesController.listarCidades);
 //excluir
 router.get('/categorias', CategoriasController.listarCategorias);
 router.post('/categorias', CategoriasController.create)
-//editar
+router.patch('/categorias/:catId', CategoriasController.update)
 //excluir
 router.get('/estabelecimentos', EstabelecimentosController.listarEstabelecimentos);
 //cadastrar
@@ -34,7 +34,7 @@ router.get('/estabelecimentos', EstabelecimentosController.listarEstabelecimento
 //excluir
 router.get('/produtos', ProdutosController.listarProdutos);
 router.post('/produtos', ProdutosController.create)
-//editar
+
 //excluir
 router.get('/links', LinksController.listarLinks);
 //cadastrar

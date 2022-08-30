@@ -20,7 +20,7 @@ module.exports = {
         try{
             const {proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao} = request.body;
 
-            const sql = 'INSERT INTO categorias (proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao) VALUES (?, ?, ?, ?, ?, ?)';
+            const sql = 'INSERT INTO produtos (proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao) VALUES (?, ?, ?, ?, ?, ?)';
             const values = [proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao];
             const confirmacao = await db.query(sql, values);
 
