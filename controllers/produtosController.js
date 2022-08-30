@@ -16,5 +16,19 @@ module.exports = {
         }
     },
 
+    async create(request, response){
+        try{
+            const {proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao} = request.body;
 
+            const sql = 'INSERT INTO categorias (proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao) VALUES (?, ?, ?, ?, ?, ?)';
+            const values = [proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao];
+            const confirmacao = await db.query(sql, values);
+
+            const idInst = confirmacao[0].insertId
+
+            return response.status(200).json({confirma: 'sucesso', message: idInst})
+        } catch(error){
+            return response.status(500).json({confirma: 'Erro', message: error})
+        }
+    }
 };

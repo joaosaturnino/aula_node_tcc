@@ -33,7 +33,7 @@ router.get('/estabelecimentos', EstabelecimentosController.listarEstabelecimento
 //editar
 //excluir
 router.get('/produtos', ProdutosController.listarProdutos);
-//cadastrar
+router.post('/produtos', ProdutosController.create)
 //editar
 //excluir
 router.get('/links', LinksController.listarLinks);
@@ -53,7 +53,7 @@ router.get('/ingredientes', IngredientesController.listarIngredientes);
 //editar
 //excluir
 router.get('/proding', ProdIngController.listarProdIng);
-//cadastrar
+router.post('/proding', ProdIngController.create)
 //editar
 //excluir
 router.get('/favoritos', FavoritosController.listarFavoritos);
