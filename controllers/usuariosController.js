@@ -21,7 +21,7 @@ module.exports = {
             const sql = 'INSERT INTO usuarios (usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao) VALUES (?, ?, ?, ?, ?, ?)';
             const values = [usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao];
             const confirmacao = await db.query(sql, values);
-            return response.status(200).json({confirma: 'Sucesso', message: usuID});
+            return response.status(200).json({confirma: 'Sucesso', message: usuId});
         }catch(error){
             return response.status(500).json({confirma: 'Erro', message: error});
         }
