@@ -18,7 +18,7 @@ const FavoritosController = require('../controllers/favoritosController');
 //definição de rotas
 router.get('/usuarios', UsuariosController.listarUsuarios);
 router.post('/usuarios', UsuariosController.create);
-//editar
+router.patch('/usuarios/:usuId', UsuariosController.update);
 //excluir
 router.get('/cidades', CidadesController.listarCidades);
 //cadastrar
@@ -57,7 +57,7 @@ router.get('/proding', ProdIngController.listarProdIng);
 //editar
 //excluir
 router.get('/favoritos', FavoritosController.listarFavoritos);
-//cadastrar
+router.post('/favoritos', FavoritosController.create);
 //editar
 //excluir
 
