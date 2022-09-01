@@ -34,7 +34,7 @@ router.get('/estabelecimentos', EstabelecimentosController.listarEstabelecimento
 //excluir
 router.get('/produtos', ProdutosController.listarProdutos);
 router.post('/produtos', ProdutosController.create)
-
+router.patch('/produtos/:proId', ProdutosController.update)
 //excluir
 router.get('/links', LinksController.listarLinks);
 //cadastrar
@@ -54,7 +54,7 @@ router.get('/ingredientes', IngredientesController.listarIngredientes);
 //excluir
 router.get('/proding', ProdIngController.listarProdIng);
 router.post('/proding', ProdIngController.create)
-//editar
+//NÃO PRECISA DE UPDATE
 //excluir
 router.get('/favoritos', FavoritosController.listarFavoritos);
 //cadastrar

@@ -30,5 +30,23 @@ module.exports = {
         } catch(error){
             return response.status(500).json({confirma: 'Erro', message: error})
         }
+    },
+    async update(request, response){
+        try{
+            // Paraetros passados via corpo da requisição 
+            const {proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao} = request.body;
+            // Parametro passado via url na chamada da API pelo front end 
+            const {proId} = request.params;
+            // Instrução SQL para atualização
+            const sql = "UPDATE categorias SET proNome = ?, cat_Id = ?, proImagem = ?, ProAtualizacao = ?, proDescricao WHERE proId = ?;";
+            // Definição de array com os parametros que receberam os valores do front-end
+            const values = [proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao, proId];
+            // Executa a instrução no banco de dados
+            const atualização = await db.query(sql, values);
+            //
+            return response.status(200).json({Confirma :"Sucesso", message: "Dados Atualizados"})
+        } catch(error){
+            return response.status(500).json({confirma: "Erro", message: error})
+        }
     }
 };
