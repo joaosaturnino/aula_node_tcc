@@ -54,7 +54,7 @@ router.get('/ingredientes', IngredientesController.listarIngredientes);
 //excluir
 router.get('/proding', ProdIngController.listarProdIng);
 router.post('/proding', ProdIngController.create)
-//NÃO PRECISA DE UPDATE
+router.patch('/proding/:pro_id', ProdIngController.update)
 //excluir
 router.get('/favoritos', FavoritosController.listarFavoritos);
 //cadastrar
