@@ -30,7 +30,7 @@ router.get('/categorias', CategoriasController.listarCategorias);
 //excluir
 router.get('/estabelecimentos', EstabelecimentosController.listarEstabelecimentos);
 router.post('/estabelecimentos', EstabelecimentosController.create);
-//editar
+router.patch('/estabelecimentos/:estId', EstabelecimentosController.update);
 //excluir
 router.get('/produtos', ProdutosController.listarProdutos);
 //cadastrar
@@ -50,7 +50,7 @@ router.patch('/telefones/:telId', TelefonesController.update);
 //excluir
 router.get('/ingredientes', IngredientesController.listarIngredientes);
 router.post('/ingredientes', IngredientesController.create);
-//editar
+router.patch('/ingredientes/:igtId', IngredientesController.update);
 //excluir
 router.get('/proding', ProdIngController.listarProdIng);
 //cadastrar

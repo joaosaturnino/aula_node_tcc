@@ -30,4 +30,20 @@ module.exports = {
             return response.status(500).json({confirma: 'Erro', message: error});
         }
     },
+    async update(request, response){
+        try{
+            const {igtNome} = request.body;
+
+            // parametro passado via url na chamada da api pelo front-end
+            const {igtId} = request.params;
+            const sql = 'UPDATE ingredientes SET igtNome = ? WHERE igtId = ?';
+            const values = [igtNome, igtId];
+            const atualizacao = await db.query(sql, values);
+            // const estId = confirmacao[0].insertId;
+
+            return response.status(200).json({confirma: 'Sucesso', message: 'Dados atualizados'});
+        } catch (error){
+            return response.status(500).json({confirma: 'Erro', message: error});
+        }
+    },
 };
