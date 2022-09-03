@@ -3,7 +3,7 @@ const { json } = require("express");
 const db = require("../database/connection");
 
 module.exports = {
-    async listarUsuarios(request, response) {
+    /*async listarUsuarios(request, response) {
         try {
             const sql = 'SELECT usuId, usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao FROM usuarios;';
             const usuarios = await db.query(sql);
@@ -13,7 +13,7 @@ module.exports = {
         } catch (error) {
             return response.status(500).json({confirma: 'Erro', message: error});
         }
-    },
+    },*/
     async create(request, response) {
         try {
             const {usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao } = request.body;
@@ -46,4 +46,35 @@ module.exports = {
             return response.status(500).json({confirma: 'Erro', message: error});
         }
     },
+    async delete(request, response) {
+        try {
+                //parametro passado via url na chamada da api pelo front-end
+                const { usuId } = request.params;
+                //const usuId = request.headers.authorization; // controle de acesso para execucao das funcoes
+
+                //comando de exclusao
+                const sql = 'DELETE FROM usuarios WHERE usuId = ?';
+                //definicao de array com os parametros que receberem os valores do front-end
+                const values = [ usuId ];
+                //executa a instrucao de exclusao no banco de dados
+                await db.query(sql, values);
+                //mensagem de retorno no formato json;
+                return response.status(200).json({confirma : 'Sucesso', message: 'Mesa com id ' + usuId + ' excluída com sucesso'});
+            }catch (error) {
+                return response.status(500).json({confirma: 'Erro', message: error});
+            }
+                
+    },
+    async listarUsuarios(request, response) {
+        try {
+            const { usuId } = request.params;
+            const sql = 'SELECT usuId, usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao FROM usuarios;';
+            const values = [usuId];
+            const usuario = await db.query(sql, values);
+            return response.status(200).json({confirma: 'Sucesso', message: usuario[0]});
+        }catch (error) {
+            return response.status(500).json({confirma: 'Erro', message: error});
+        }
+    }
+    
 };

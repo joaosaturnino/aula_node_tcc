@@ -16,10 +16,11 @@ const ProdIngController = require('../controllers/prod_ingController');
 const FavoritosController = require('../controllers/favoritosController');
 
 //definição de rotas
-router.get('/usuarios', UsuariosController.listarUsuarios);
+//router.get('/usuarios', UsuariosController.listarUsuarios);
+router.get('/usuarios/:usuId', UsuariosController.listarUsuarios);
 router.post('/usuarios', UsuariosController.create);
 router.patch('/usuarios/:usuId', UsuariosController.update);
-//excluir
+router.delete('/usuarios/:usuId', UsuariosController.delete);
 router.get('/cidades', CidadesController.listarCidades);
 //cadastrar
 //editar
@@ -59,7 +60,7 @@ router.get('/proding', ProdIngController.listarProdIng);
 router.get('/favoritos', FavoritosController.listarFavoritos);
 router.post('/favoritos', FavoritosController.create);
 //editar
-//excluir
+router.delete('/favoritos/:usu_id/:pro_id', FavoritosController.delete);
 
 
 module.exports = router;
