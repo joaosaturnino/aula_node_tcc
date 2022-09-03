@@ -38,6 +38,7 @@ router.get('/produtos', ProdutosController.listarProdutos);
 //editar
 //excluir
 router.get('/links', LinksController.listarLinks);
+router.get('/links/:lnkId', LinksController.listarLink);
 router.post('/links', LinksController.create);
 router.patch('/links/:lnkId', LinksController.update);
 //cadastrar

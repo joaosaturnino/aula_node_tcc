@@ -43,4 +43,15 @@ module.exports = {
             return response.status(500).json({confirma: 'Erro', message: error});            
         }        
     },
+    async listarLink(request, response) {
+        try {
+            const { lnkId } = request.params;
+            const sql = 'SELECT lnkId, lnkDescricao, lnkLink, lnkIcone, est_Id FROM links WHERE lnkId = ?;';
+            const values = [lnkId];
+            const link = await db.query(sql, values);
+            return response.status(200).json({confirma: 'Sucesso', message: link[0]});
+        }catch (error){
+            return response.status(500).json({confirma: 'Erro', message: error});            
+        }
+    },
 };
