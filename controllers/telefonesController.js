@@ -6,8 +6,10 @@ const db = require("../database/connection");
 module.exports = {
     async listarTelefones(request, response) {
         try {
-            const sql = 'SELECT telId, telEstabelecimento, est_Id, telObservacao FROM telefones;';
-            const telefones = await db.query(sql);
+            const {est_Id} = request.params;
+            const sql = 'SELECT telId, telEstabelecimento, est_Id, telObservacao FROM telefones WHERE est_Id = ?;';
+            const values = [est_Id];
+            const telefones = await db.query(sql, values);
             //console.log('tam: ' + usuarios[0].length);
             //return response.status(200).json(usuarios[0]);
             return response.status(200).json({confirma: 'Sucesso', nResults: telefones[0].length, message: telefones[0]});
@@ -50,4 +52,18 @@ module.exports = {
             return response.status(500).json({confirma: 'Erro', message: error});
         }
     },
-};
+    async delete (request, response){
+        try{
+            const {telId} = request.params;
+
+            const sql = 'DELETE FROM telefones WHERE telId = ?';
+            const values = [telId];
+
+            await db.query(sql, values);
+
+            return response.status(200).json({confirma: 'Sucesso', message: 'Dados excluídos'});
+        } catch (error){
+            return response.status(500).json({confirma: 'Erro', message: error});
+        }
+    }
+}
