@@ -6,7 +6,7 @@ const db = require("../database/connection");
 module.exports = {
     async listarProdutos(request, response) {
         try {
-            const sql = 'SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao FROM produtos;';
+            const sql = 'SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao FROM produtos';
             const produtos = await db.query(sql);
             //console.log('tam: ' + usuarios[0].length);
             //return response.status(200).json(usuarios[0]);
@@ -48,5 +48,42 @@ module.exports = {
         } catch(error){
             return response.status(500).json({confirma: "Erro", message: error})
         }
+    },
+
+    async delete(request, response){
+        try{
+
+            const { proId } = request.params;
+
+            const sql = "DELETE FROM produtos WHERE proId = ?";
+
+            const values = [proId];
+            
+            await db.query(sql, values);
+
+            return response.status(200).json({confirma: 'Sucesso', message: 'Produto ' + proId + ' excluída com sucesso'})
+        }catch(error){
+            return response.status(500).json({confirma:'Erro', message: error})
+        }
+    },
+
+    async listarProduto(request, response){
+        try{
+            const {proId} = request.params;
+
+            const sql = 'SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao FROM produtos WHERE proId = ?;';
+
+            const values = [proId];
+
+            const produto = await db.query(sql, values)
+
+            return response.status(200).json({confirma:'Sucesso', message: produto[0]})
+        }catch(error){
+            return response.status(500).json({confirma:'Erro', message: error})
+        }
     }
 };
+
+
+
+

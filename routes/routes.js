@@ -24,18 +24,23 @@ router.get('/cidades', CidadesController.listarCidades);
 //cadastrar
 //editar
 //excluir
+
 router.get('/categorias', CategoriasController.listarCategorias);
 router.post('/categorias', CategoriasController.create)
 router.patch('/categorias/:catId', CategoriasController.update)
-//excluir
+router.delete('/categorias/:catId', CategoriasController.delete)
+
+
 router.get('/estabelecimentos', EstabelecimentosController.listarEstabelecimentos);
 //cadastrar
 //editar
 //excluir
 router.get('/produtos', ProdutosController.listarProdutos);
+router.get('/produtos/:proId', ProdutosController.listarProduto);
 router.post('/produtos', ProdutosController.create)
 router.patch('/produtos/:proId', ProdutosController.update)
-//excluir
+router.delete('/produtos/:proId', ProdutosController.delete)
+
 router.get('/links', LinksController.listarLinks);
 //cadastrar
 //editar

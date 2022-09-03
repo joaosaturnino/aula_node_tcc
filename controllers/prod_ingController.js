@@ -47,6 +47,23 @@ module.exports = {
         } catch(error){
             return response.status(500).json({confirma: "Erro", message: error})
         }
-    }
+    },
+
+    async delete(request, response){
+        try{
+
+            const { pro_id } = request.params;
+
+            const sql = "DELETE FROM prod_ing WHERE pr_id = ?";
+
+            const values = [pro_id];
+            
+            await db.query(sql, values);
+
+            return response.status(200).json({confirma: 'Sucesso', message: 'Produto ' + pro_id + ' excluída com sucesso'})
+        }catch(error){
+            return response.status(500).json({confirma:'Erro', message: error})
+        }
+    },
 
 };

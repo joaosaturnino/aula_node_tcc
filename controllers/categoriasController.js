@@ -47,6 +47,23 @@ module.exports = {
         } catch(error){
             return response.status(500).json({confirma: "Erro", message: error})
         }
+    },
+
+    async delete(request, response){
+        try{
+
+            const { catId } = request.params;
+
+            const sql = "DELETE FROM categorias WHERE catId = ?";
+
+            const values = [catId];
+            
+            await db.query(sql, values);
+
+            return response.status(200).json({confirma: 'Sucesso', message: 'Categoria ' + catId + ' excluída com sucesso'})
+        }catch(error){
+            return response.status(500).json({confirma:'Erro', message: error})
+        }
     }
 
 };
