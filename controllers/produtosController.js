@@ -82,8 +82,36 @@ module.exports = {
             return response.status(500).json({confirma:'Erro', message: error})
         }
     }
+
 };
 
+module.exports={
+    async listarProdutos(request, response){
+        try{
+            const {page = 1, limit = 20} = request.query;
+            const inicio = (page -1) * limit;
+
+            const {proNome = '%%'} = request.query;
+            const {cat_Id = '%%'} = request.query;
+
+            const proNomeProd = proNome === '%%' ? '%%' : '%' + proNome + '%';
+
+            const countProd = await bd.query(`SELECT COUNT(*) AS cat_Id FROM produtos WHERE proNome LIKE ? AND cat_Id LIKE ?`);
+            const valuesCount = [proNome, cat_Id]
+            const n_prod = await db.query(countProd, valuesCount)
+
+            const sql = ('SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, tamPreco, tamPrecoPromo, tamPrato, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId INNER JOIN Tamanhos tm ON proId = tm.pro_Id  Where proNome LIKE "%%" AND tamPrato LIKE "%%" AND cat_Id LIKE "%%" AND est_Id LIKE "%%" AND tamPromo LIKE "%%" LIMIT 0, 20')
+            
+            const values = [proNomeProd, cat_Id, parseInt(inicio), parseInt(limit)];
+            const produtos = await db.query(sql, values);
+
+            response.header('X-Total-Count', n_prod[0][0].cat_Id);
+            return response.status(200).json(produtos[0]);
+        } catch(error){
+            return response.status(500).jason({confirma: 'Erro', message: error}); 
+        }
+    }
+}
 
 
 
