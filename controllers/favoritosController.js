@@ -50,23 +50,22 @@ module.exports = {
     },
     async delete(request, response) {
         try {
-                //parametro passado via url na chamada da api pelo front-end
-                const { usu_id, pro_id} = request.params;
-                //const { pro_id } = request.params;
-                //const usuId = request.headers.authorization; // controle de acesso para execucao das funcoes
+            //parametro passado via url na chamada da api pelo front-end
+            const { usu_id, pro_id} = request.params;
+            //const { pro_id } = request.params;
+            //const usuId = request.headers.authorization; // controle de acesso para execucao das funcoes
 
-                //comando de exclusao
-                const sql = 'DELETE FROM favoritos WHERE usu_id = ? AND pro_id = ?';
-                //definicao de array com os parametros que receberem os valores do front-end
-                const values = [ usu_id, pro_id ];
-                //const values = [ pro_id];
-                //executa a instrucao de exclusao no banco de dados
-                await db.query(sql, values);
-                //mensagem de retorno no formato json;
-                return response.status(200).json({confirma : 'Sucesso', message: 'Favorito com id ' + usu_id + ' excluída com sucesso'});
-            }catch (error) {
-                return response.status(500).json({confirma: 'Erro', message: error});
-            }
-                
+            //comando de exclusao
+            const sql = 'DELETE FROM favoritos WHERE usu_id = ? AND pro_id = ?';
+            //definicao de array com os parametros que receberem os valores do front-end
+            const values = [ usu_id, pro_id ];
+            //const values = [ pro_id];
+            //executa a instrucao de exclusao no banco de dados
+            await db.query(sql, values);
+            //mensagem de retorno no formato json;
+            return response.status(200).json({confirma : 'Sucesso', message: 'Favorito com id ' + usu_id + ' excluída com sucesso'});
+        }catch (error) {
+            return response.status(500).json({confirma: 'Erro', message: error});
+        } 
     },
 };
