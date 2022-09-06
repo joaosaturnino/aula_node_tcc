@@ -5,11 +5,33 @@ const db = require("../database/connection");
 module.exports = {
     async listarFavoritos(request, response) {
         try {
-            const sql = 'SELECT usu_id, pro_id, favAvaliacao, favFavorito FROM favoritos;';
+
+            const {page = 1, limit = 20} = request.query;
+            const inicio = (page -1) * limit;
+
+            const {usu_id = '%%'} = request.body;
+            const {pro_id = '%%'} = request.body;
+            const {proNome = '%%'} = request.body;
+
+            const nomeProd = proNome === '%%' ? '%%' : '%' + proNome + '%';
+
+            const sqlCount = ('SELECT COUNT(*) AS pro_id FROM favoritos WHERE usu_id like ? AND pro_id like ?;');
+            const valuesCont = [nomeProd, usu_id, pro_id];
+            const n_fav = await db.query(sqlCount, valuesCont);
+
+            const sqlCampos = ('SELECT fv.usu_id, fv.pro_id, fv.favAvaliacao, fv.favFavorito, pd.proNome FROM favoritos fv ');
+            const sqlJoin = ('INNER JOIN produtos pd ON fv.pro_id = pd.proid ');
+            const sqlFiltro = ('WHERE pd.proNome like ? AND fv.pro_id like ? LIMIT 0, 10;');
+            const values = [nomeProd, pro_id, parseInt(inicio), parseInt(limit)];
+            const favoritos = await db.query(sqlCampos + sqlJoin + sqlFiltro, values);
+
+            response.header('X-Total-Count', n_fav[0][0].cont_fav);
+            return response.status(200).json({confirma: 'Sucesso', nResults: favoritos[0].length, message: favoritos[0]});
+            /*const sql = 'SELECT usu_id, pro_id, favAvaliacao, favFavorito FROM favoritos;';
             const favoritos = await db.query(sql);
             //console.log('tam: ' + usuarios[0].length);
             //return response.status(200).json(usuarios[0]);
-            return response.status(200).json({confirma: 'Sucesso', nResults: favoritos[0].length, message: favoritos[0]});
+            return response.status(200).json({confirma: 'Sucesso', nResults: favoritos[0].length, message: favoritos[0]});*/
         } catch (error) {
             return response.status(500).json({confirma: 'Erro', message: error});
         }
@@ -68,4 +90,7 @@ module.exports = {
             return response.status(500).json({confirma: 'Erro', message: error});
         } 
     },
+
+
+
 };
