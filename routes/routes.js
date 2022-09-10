@@ -37,7 +37,7 @@ router.get('/estabelecimentos', EstabelecimentosController.listarEstabelecimento
 //excluir
 router.get('/produtos', ProdutosController.listarProdutos);
 // router.get('/produtos/:proId', ProdutosController.listarProduto);
-// router.post('/produtos', ProdutosController.create)
+router.post('/produtos', ProdutosController.create)
 // router.patch('/produtos/:proId', ProdutosController.update)
 // router.delete('/produtos/:proId', ProdutosController.delete)
 

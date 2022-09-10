@@ -16,21 +16,21 @@ const db = require("../database/connection");
 //         }
 //     },
 
-//     async create(request, response){
-//         try{
-//             const {proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao} = request.body;
+    // async create(request, response){
+    //     try{
+    //         const {proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao} = request.body;
 
-//             const sql = 'INSERT INTO produtos (proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao) VALUES (?, ?, ?, ?, ?, ?)';
-//             const values = [proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao];
-//             const confirmacao = await db.query(sql, values);
+    //         const sql = 'INSERT INTO produtos (proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao) VALUES (?, ?, ?, ?, ?, ?)';
+    //         const values = [proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao];
+    //         const confirmacao = await db.query(sql, values);
 
-//             const idInst = confirmacao[0].insertId
+    //         const idInst = confirmacao[0].insertId
 
-//             return response.status(200).json({confirma: 'sucesso', message: idInst})
-//         } catch(error){
-//             return response.status(500).json({confirma: 'Erro', message: error})
-//         }
-//     },
+    //         return response.status(200).json({confirma: 'sucesso', message: idInst})
+    //     } catch(error){
+    //         return response.status(500).json({confirma: 'Erro', message: error})
+    //     }
+    // },
 //     async update(request, response){
 //         try{
 //             // Paraetros passados via corpo da requisição 
@@ -99,7 +99,25 @@ module.exports={
         } catch(error){
             return response.status(500).json({confirma: 'Erro', message: error}); 
         }
-    }
+    },
+
+    async create(request, response){
+        try{
+            const {proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao} = request.body;
+
+            const sql = 'INSERT INTO produtos (proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao) VALUES (?, ?, ?, ?, ?, ?)';
+            const values = [proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao];
+            const confirmacao = await db.query(sql, values);
+
+            const idInst = confirmacao[0].insertId
+
+            const dados = {nome: proNome, categoria: cat_Id, Estabelecimento: est_Id, Imagem: proImagem, Atualizado: proAtualizacao, Descrição: proDescricao}
+
+            return response.status(200).json({confirma: 'sucesso',Info: dados, message: idInst})
+        } catch(error){
+            return response.status(500).json({confirma: 'Erro', message: error})
+        }
+    },
 }
 
 
