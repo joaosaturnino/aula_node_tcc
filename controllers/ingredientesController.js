@@ -24,8 +24,8 @@ module.exports = {
             const confirmacao = await db.query(sql, values);
 
             const ingtId = confirmacao[0].insertId;
-
-            return response.status(200).json({confirma: 'Sucesso', message: ingtId});
+            const dados = {igtId, igtNome}
+            return response.status(200).json({confirma: 'Sucesso', message: dados});
         } catch (error){
             return response.status(500).json({confirma: 'Erro', message: error});
         }
@@ -40,8 +40,8 @@ module.exports = {
             const values = [igtNome, igtId];
             const atualizacao = await db.query(sql, values);
             // const estId = confirmacao[0].insertId;
-
-            return response.status(200).json({confirma: 'Sucesso', message: 'Dados atualizados'});
+            const dados = {igtId, igtNome}
+            return response.status(200).json({confirma: 'Sucesso', message: dados});
         } catch (error){
             return response.status(500).json({confirma: 'Erro', message: error});
         }

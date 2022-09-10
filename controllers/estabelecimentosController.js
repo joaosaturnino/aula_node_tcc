@@ -10,6 +10,7 @@ module.exports = {
             const estabelecimentos = await db.query(sql);
             //console.log('tam: ' + usuarios[0].length);
             //return response.status(200).json(usuarios[0]);
+           
             return response.status(200).json({confirma: 'Sucesso', nResults: estabelecimentos[0].length, message: estabelecimentos[0]});
         } catch (error) {
             return response.status(500).json({confirma: 'Erro', message: error});
@@ -19,13 +20,13 @@ module.exports = {
         try{
             const {estNome, estEndereco, estLogo, usu_Id, cid_Id} = request.body;
 
-            const sql = 'INSERT INTO estabelecimentos (estNome, estEndereco, estLogo, usu_Id, cid_Id) VALUES (?,?,?,?,?)' ;
+            const sql = 'INSERT INTO estabelecimentos (estNome, estEndereco, estLogo, usu_Id, cid_Id) VALUES (?,?,?,?,?);' ;
             const values = [estNome, estEndereco, estLogo, usu_Id, cid_Id];
             const confirmacao = await db.query(sql, values);
 
             const estId = confirmacao[0].insertId;
-
-            return response.status(200).json({confirma: 'Sucesso', message: estId});
+            const dados = {id: estId, estNome, estEndereco, estLogo, cid_Id}
+            return response.status(200).json({confirma: 'Sucesso', message: dados});
         } catch (error){
             return response.status(500).json({confirma: 'Erro', message: error});
         }
@@ -40,8 +41,8 @@ module.exports = {
             const values = [estNome, estEndereco, estLogo, usu_Id, cid_Id, estId];
             const atualizacao = await db.query(sql, values);
             // const estId = confirmacao[0].insertId;
-
-            return response.status(200).json({confirma: 'Sucesso', message: 'Dados atualizados'});
+            const dados = {estNome, estEndereco, estLogo, usu_Id, cid_Id}
+            return response.status(200).json({confirma: 'Sucesso', message: dados});
         } catch (error){
             return response.status(500).json({confirma: 'Erro', message: error});
         }
