@@ -21,6 +21,7 @@ router.get('/usuarios/:usuId', UsuariosController.listarUsuarios);
 router.post('/usuarios', UsuariosController.create);
 router.patch('/usuarios/:usuId', UsuariosController.update);
 router.delete('/usuarios/:usuId', UsuariosController.delete);
+router.post('/usuarios/login', UsuariosController.session);
 router.get('/cidades', CidadesController.listarCidades);
 //cadastrar
 //editar

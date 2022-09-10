@@ -1,6 +1,7 @@
 //joaohenrique
 const { json } = require("express");
 const db = require("../database/connection");
+const bcrypt = require("bcrypt");
 
 module.exports = {
     /*async listarUsuarios(request, response) {
@@ -17,13 +18,15 @@ module.exports = {
     async create(request, response) {
         try {
             const {usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao } = request.body;
-            const senhacripto = hashPassword(usuSenha)
+            const salt = bcrypt.genSaltSync(10);
+            const hash = bcrypt.hashSync(usuSenha, salt);
 
             const sql = 'INSERT INTO USUARIOS (usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao) VALUES (?, ?, ?, ?, ?, ?);';
-            const values = [usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao];
+            const values = [usuNome, usuEmail, hash, usuTipo, usuDocumento, usuModeracao];
             const confirmacao = await db.query(sql, values);
             const usuId = confirmacao[0].insertId;
-            return response.status(200).json({confirma: 'Sucesso', message: usuId});
+            const dados = {id: usuId, nome: usuNome, email: usuEmail, documento: usuDocumento, tipo: usuTipo, moderacao: usuModeracao};
+            return response.status(200).json({confirma: 'Sucesso', message: dados});
         }catch(error){
             return response.status(500).json({confirma: 'Erro', message: error});
         }
@@ -78,7 +81,26 @@ module.exports = {
         }
     },
     async session(request, response) {
+        try{
+            const { login, senha } = request.body;
 
-    }
+            const sql = 'SELECT usuId, usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao FROM usuarios WHERE usuEmail = ?;';
+            const values = [login];
+            const usuario = await db.query(sql, values);
+
+            if (usuario[0].length ===0) {
+                return response.status(200).json({confirma: 'Erro', message: 'E-mail não existe!'});
+            }
+
+            let logar = bcrypt.compareSync(senha, usuario[0][0].usuSenha);
+            if (logar == true) {
+                return response.status(200).json({confirma: true, nome: usuario[0][0].usuNome, tipo: usuario[0][0].usuTipo});
+            }else {
+                return response.status(200).json({confirma: false, message: 'A senha não corresponde!'});
+            }
+        } catch (error) {
+            return response.status(500).json({confirma: 'Erro', message: error});
+        }
+    },  
     
 };

@@ -46,7 +46,7 @@ module.exports = {
             const usuid = confirmacao[0].insertId;
             const proid = confirmacao[0].insertId;
             const dados = {usu_id, pro_id, favAvaliacao, favFavorito};
-            return response.status(200).json({confirma: 'Sucesso', message: usuid});
+            return response.status(200).json({confirma: 'Sucesso', message: dados});
             //return response.status(200).json({confirma: 'Sucesso', message: proid});
         }catch(error){
             return response.status(500).json({confirma: 'Erro', message: error});
