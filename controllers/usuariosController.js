@@ -17,6 +17,7 @@ module.exports = {
     async create(request, response) {
         try {
             const {usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao } = request.body;
+            const senhacripto = hashPassword(usuSenha)
 
             const sql = 'INSERT INTO USUARIOS (usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao) VALUES (?, ?, ?, ?, ?, ?);';
             const values = [usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao];
@@ -76,5 +77,8 @@ module.exports = {
             return response.status(500).json({confirma: 'Erro', message: error});
         }
     },
+    async session(request, response) {
+
+    }
     
 };
