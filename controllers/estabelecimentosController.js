@@ -64,7 +64,7 @@ module.exports = {
     async listarUnicoEstabelecimento(request, response) {
         try {
             const {estId} = request.params;
-            const sql = 'SELECT estId, estNome, estEndereco, estLogo, usu_Id, cid_Id FROM estabelecimentos WHERE estId = ?;';
+            const sql = 'SELECT e.estId, e.estNome, e.estEndereco, e.estLogo, u.usuNome, c.cidNome FROM estabelecimentos e INNER JOIN cidades c ON c.cidId = e.cid_Id INNER JOIN usuarios u ON u.usuId = e.usu_Id WHERE estId = ?;';
             const values = [estId];
             const estabelecimento = await db.query(sql,values);
             //console.log('tam: ' + usuarios[0].length);
