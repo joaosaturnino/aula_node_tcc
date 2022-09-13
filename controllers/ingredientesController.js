@@ -15,4 +15,35 @@ module.exports = {
             return response.status(500).json({confirma: 'Erro', message: error});
         }
     },
+    async create(request, response){
+        try{
+            const {igtId, igtNome} = request.body;
+
+            const sql = 'INSERT INTO ingredientes (igtId, igtNome) VALUES (?,?)';
+            const values = [igtId, igtNome];
+            const confirmacao = await db.query(sql, values);
+
+            const ingtId = confirmacao[0].insertId;
+            const dados = {igtId, igtNome}
+            return response.status(200).json({confirma: 'Sucesso', message: dados});
+        } catch (error){
+            return response.status(500).json({confirma: 'Erro', message: error});
+        }
+    },
+    async update(request, response){
+        try{
+            const {igtNome} = request.body;
+
+            // parametro passado via url na chamada da api pelo front-end
+            const {igtId} = request.params;
+            const sql = 'UPDATE ingredientes SET igtNome = ? WHERE igtId = ?';
+            const values = [igtNome, igtId];
+            const atualizacao = await db.query(sql, values);
+            // const estId = confirmacao[0].insertId;
+            const dados = {igtId, igtNome}
+            return response.status(200).json({confirma: 'Sucesso', message: dados});
+        } catch (error){
+            return response.status(500).json({confirma: 'Erro', message: error});
+        }
+    },
 };

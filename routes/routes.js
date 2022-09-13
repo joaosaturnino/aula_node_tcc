@@ -32,9 +32,11 @@ router.get('/categorias', CategoriasController.listarCategorias);
 //editar
 //excluir
 router.get('/estabelecimentos', EstabelecimentosController.listarEstabelecimentos);
-//cadastrar
-//editar
-//excluir
+router.get('/estabelecimentos/:estId', EstabelecimentosController.listarUnicoEstabelecimento);
+router.post('/estabelecimentos', EstabelecimentosController.create);
+router.patch('/estabelecimentos/:estId', EstabelecimentosController.update);
+router.delete('/estabelecimentos/:estId', EstabelecimentosController.delete);
+
 router.get('/produtos', ProdutosController.listarProdutos);
 //cadastrar
 //editar
@@ -47,14 +49,16 @@ router.get('/tamanhos', TamanhosController.listarTamanhos);
 //cadastrar
 //editar
 //excluir
-router.get('/telefones', TelefonesController.listarTelefones);
-//cadastrar
-//editar
-//excluir
+router.get('/telefones/:est_Id', TelefonesController.listarTelefones);
+router.post('/telefones', TelefonesController.create);
+router.patch('/telefones/:telId', TelefonesController.update);
+router.delete('/telefones/:telId', TelefonesController.delete);
+
 router.get('/ingredientes', IngredientesController.listarIngredientes);
-//cadastrar
-//editar
+router.post('/ingredientes', IngredientesController.create);
+router.patch('/ingredientes/:igtId', IngredientesController.update);
 //excluir
+
 router.get('/proding', ProdIngController.listarProdIng);
 //cadastrar
 //editar
