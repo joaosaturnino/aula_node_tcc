@@ -27,10 +27,13 @@ router.get('/cidades', CidadesController.listarCidades);
 //cadastrar
 //editar
 //excluir
+
 router.get('/categorias', CategoriasController.listarCategorias);
-//cadastrar
-//editar
-//excluir
+router.post('/categorias', CategoriasController.create)
+router.patch('/categorias/:catId', CategoriasController.update)
+router.delete('/categorias/:catId', CategoriasController.delete)
+
+
 router.get('/estabelecimentos', EstabelecimentosController.listarEstabelecimentos);
 router.get('/estabelecimentos/:estId', EstabelecimentosController.listarUnicoEstabelecimento);
 router.post('/estabelecimentos', EstabelecimentosController.create);
@@ -38,9 +41,11 @@ router.patch('/estabelecimentos/:estId', EstabelecimentosController.update);
 router.delete('/estabelecimentos/:estId', EstabelecimentosController.delete);
 
 router.get('/produtos', ProdutosController.listarProdutos);
-//cadastrar
-//editar
-//excluir
+// router.get('/produtos/:proId', ProdutosController.listarProduto);
+router.post('/produtos', ProdutosController.create)
+// router.patch('/produtos/:proId', ProdutosController.update)
+// router.delete('/produtos/:proId', ProdutosController.delete)
+
 router.get('/links', LinksController.listarLinks);
 //cadastrar
 //editar
@@ -60,8 +65,8 @@ router.patch('/ingredientes/:igtId', IngredientesController.update);
 //excluir
 
 router.get('/proding', ProdIngController.listarProdIng);
-//cadastrar
-//editar
+router.post('/proding', ProdIngController.create)
+router.patch('/proding/:pro_id', ProdIngController.update)
 //excluir
 router.get('/favoritos', FavoritosController.listarFavoritos);
 router.post('/favoritos', FavoritosController.create);
