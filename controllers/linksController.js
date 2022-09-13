@@ -43,6 +43,7 @@ module.exports = {
             return response.status(500).json({confirma: 'Erro', message: error});            
         }        
     },
+    
     async listarLink(request, response) {
         try {
             const { lnkId } = request.params;

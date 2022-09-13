@@ -45,6 +45,8 @@ router.patch('/links/:lnkId', LinksController.update);
 //editar
 //excluir
 router.get('/tamanhos', TamanhosController.listarTamanhos);
+router.post('/tamanhos', TamanhosController.create);
+router.patch('/tamanhos/:tamId', TamanhosController.update);
 //cadastrar
 //editar
 //excluir
