@@ -93,9 +93,13 @@ module.exports={
             const values = [proNomeProd, cat_Id, tamPrato, est_Id, tamPromo, parseInt(inicio), parseInt(limit)];
             const produtos = await db.query(sql, values);
 
+            const sqlT = 'SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao FROM produtos WHERE proNome LIKE ?;';
+            const valuesCountT = [proNome];
+            const produtosT = await db.query(sqlT, valuesCountT);
+
             response.header('X-Total-Count', n_prod[0][0].countProd);
             //return response.status(200).json(produtos[0]);
-            return response.status(200).json({confirma:'Sucesso', nResults: produtos[0].length, message: produtos[0]});
+            return response.status(200).json({confirma:'Sucesso', nResults: produtos[0].length,Total: produtosT[0].length, message: produtos[0]});
         } catch(error){
             return response.status(500).json({confirma: 'Erro', message: error}); 
         }
@@ -119,6 +123,30 @@ module.exports={
         }
     },
 }
+
+
+
+// async create(request, response) {
+//     try {
+
+//         const { itensPedido } = request.body;
+//         //console.log(itensPedido);
+//          let posicoes = []; 
+//         itensPedido.forEach((pos, i) => {
+//             //console.log(pos.ppd_hora, pos.ppd_qtd, pos.ppd_valor, pos.ppd_obs, pos.ppd_status, pos.ped_id, pos.prd_id); 
+//             posicoes.push([pos.ppd_hora, pos.ppd_qtd, pos.ppd_valor, pos.ppd_obs, pos.ppd_status, pos.ped_id, pos.prd_id]); 
+//         });
+
+//         const sql = 'INSERT INTO pedido_produtos (ppd_hora, ppd_qtd, ppd_valor, ppd_obs, ppd_status, ped_id, prd_id) VALUES ?'; 
+
+//         const confirmacao = await db.query(sql, [posicoes]);
+
+//         //console.log(confirmacao[0].insertId);
+//         return response.status(200).json({confirma: 'Itens adicionados com sucesso!'});   
+//     } catch (error) { 
+//         return response.status(500).json({confirma: 'Erro', message: error});
+//     }   
+// },
 
 
 
