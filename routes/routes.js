@@ -54,12 +54,14 @@ router.patch('/links/:lnkId', LinksController.update);
 //cadastrar
 //editar
 //excluir
+
 router.get('/tamanhos', TamanhosController.listarTamanhos);
 router.post('/tamanhos', TamanhosController.create);
 router.patch('/tamanhos/:tamId', TamanhosController.update);
 //cadastrar
 //editar
 //excluir
+
 router.get('/telefones/:est_Id', TelefonesController.listarTelefones);
 router.post('/telefones', TelefonesController.create);
 router.patch('/telefones/:telId', TelefonesController.update);
@@ -74,6 +76,7 @@ router.get('/proding', ProdIngController.listarProdIng);
 router.post('/proding', ProdIngController.create)
 router.patch('/proding/:pro_id', ProdIngController.update)
 //excluir
+
 router.get('/favoritos', FavoritosController.listarFavoritos);
 router.post('/favoritos', FavoritosController.create);
 //editar
