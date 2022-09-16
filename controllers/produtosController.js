@@ -57,6 +57,7 @@ module.exports={
             return response.status(500).json({confirma: 'Erro', message: error})
         }
     },
+
     //     async listaProdutos(request, response) {
     //     try {
     //         const sql = 'SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao FROM produtos';
@@ -71,6 +72,8 @@ module.exports={
 
 
 }
+
+
 
 // module.exports = {
 //     async listarProdutos(request, response) {
