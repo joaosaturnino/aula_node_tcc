@@ -3,6 +3,22 @@
 const { json } = require("express");
 const db = require("../database/connection");
 
+function geraUrl (e) {
+    const produto = {
+        proId: e.proId,
+        proNome: e.proNome,
+        cat_Id: e.cat_Id,
+        est_Id: e.est_Id,
+        proImagem: e.proImagem,
+        proAtualizacao: e.proAtualizacao,
+        tamPreco: e.tamPreco,
+        tamPrecoPromo: e.tamPrecoPromo,
+        tamPrato: e.tamPrato,
+        proDescricao: e.proDescricao
+    }
+    return produto;
+}
+
 // module.exports = {
 //     async listarProdutos(request, response) {
 //         try {
@@ -97,9 +113,11 @@ module.exports={
             const valuesCountT = [proNome];
             const produtosT = await db.query(sqlT, valuesCountT);
 
+            const resultado = produtos[0].map(geraUrl);
+
             response.header('X-Total-Count', n_prod[0][0].countProd);
             //return response.status(200).json(produtos[0]);
-            return response.status(200).json({confirma:'Sucesso', nResults: produtos[0].length,Total: produtosT[0].length, message: produtos[0]});
+            return response.status(200).json({confirma:'Sucesso', nResults: produtos[0].length,Total: produtosT[0].length, message: resultado});
         } catch(error){
             return response.status(500).json({confirma: 'Erro', message: error}); 
         }
@@ -107,10 +125,10 @@ module.exports={
 
     async create(request, response){
         try{
-            const {proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao} = request.body;
-
+            const {proNome, cat_Id, est_Id, proAtualizacao, proImagem, proDescricao} = request.body;
+            const img = request.file.filename;
             const sql = 'INSERT INTO produtos (proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao) VALUES (?, ?, ?, ?, ?, ?)';
-            const values = [proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao];
+            const values = [proNome, parseFloat(cat_Id), parseFloat(est_Id), img, proAtualizacao, proDescricao];
             const confirmacao = await db.query(sql, values);
 
             const idInst = confirmacao[0].insertId

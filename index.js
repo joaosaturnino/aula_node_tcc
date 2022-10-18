@@ -8,6 +8,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(router);
+// tornando as pastas public acessivel para imagens
+app.use('/public', express.static('public'));
 
 // const port = process.env.Port || 3333;
 

@@ -15,6 +15,9 @@ const IngredientesController = require('../controllers/ingredientesController');
 const ProdIngController = require('../controllers/prod_ingController');
 const FavoritosController = require('../controllers/favoritosController');
 
+const upload = require('../middlewares/uploadimageproduto');
+
+
 //definição de rotas
 //router.get('/usuarios', UsuariosController.listarUsuarios);
 router.get('/usuarios/:usuId', UsuariosController.listarUsuarios);
@@ -42,7 +45,7 @@ router.delete('/estabelecimentos/:estId', EstabelecimentosController.delete);
 
 router.get('/produtos', ProdutosController.listarProdutos);
 // router.get('/produtos/:proId', ProdutosController.listarProduto);
-router.post('/produtos', ProdutosController.create)
+router.post('/produtos', upload.single('img'), ProdutosController.create)
 // router.patch('/produtos/:proId', ProdutosController.update)
 // router.delete('/produtos/:proId', ProdutosController.delete)
 
