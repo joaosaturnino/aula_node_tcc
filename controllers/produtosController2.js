@@ -14,18 +14,17 @@ module.exports={
             const {cat_Id = '%%'} = request.body;
             const {tamPrato = "%%"} = request.body;
             const {est_Id = "%%"} = request.body;
-            const {tamPromo = "%%"} = request.body;
             
 
             const proNomeProd = proNome === '%%' ? '%%' : '%' + proNome + '%';
 
-            const sqlCount = ('SELECT COUNT(*) AS countProd FROM produtos p INNER JOIN Tamanhos tm ON p.proId = tm.pro_Id WHERE p.proNome LIKE ? AND p.cat_Id LIKE ? AND tm.tamPrato LIKE ? AND p.est_Id LIKE ?;');
+            const sqlCount = ('SELECT COUNT(*) AS countProd FROM produtos p WHERE p.proNome LIKE ? AND p.cat_Id LIKE ? AND AND p.est_Id LIKE ?;');
             const valuesCount = [proNomeProd, cat_Id, tamPrato, est_Id, tamPromo];
             const n_prod = await db.query(sqlCount, valuesCount);
 
-            const sql = ('SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, tamPreco, tamPrecoPromo, tamPrato, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId INNER JOIN Tamanhos tm ON proId = tm.pro_Id  Where proNome LIKE ? AND cat_Id LIKE ? AND tamPrato LIKE ? AND est_Id LIKE ? AND tamPromo LIKE ? ORDER BY tamPreco LIMIT ?, ?;');
+            const sql = ('SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proPreco, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId Where proNome LIKE ? AND cat_Id LIKE ?  AND est_Id LIKE ?  ORDER BY proPreco LIMIT ?, ?;');
             
-            const values = [proNomeProd, cat_Id, tamPrato, est_Id, tamPromo, parseInt(inicio), parseInt(limit)];
+            const values = [proNomeProd, cat_Id, est_Id,  parseInt(inicio), parseInt(limit)];
             const produtos = await db.query(sql, values);
 
             const sqlT = 'SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao FROM produtos WHERE proNome LIKE ?;';
@@ -42,15 +41,15 @@ module.exports={
 
     async create(request, response){
         try{
-            const {proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao} = request.body;
+            const {proNome, cat_Id, est_Id, proImagem, proPreco, proAtualizacao, proDescricao} = request.body;
 
-            const sql = 'INSERT INTO produtos (proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao) VALUES (?, ?, ?, ?, ?, ?)';
-            const values = [proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao];
+            const sql = 'INSERT INTO produtos (proNome, cat_Id, est_Id, proImagem, proPreco, proAtualizacao, proDescricao) VALUES (?, ?, ?, ?, ?, ?, ?)';
+            const values = [proNome, cat_Id, est_Id, proImagem, proPreco, proAtualizacao, proDescricao];
             const confirmacao = await db.query(sql, values);
 
             const idInst = confirmacao[0].insertId
 
-            const dados = {nome: proNome, categoria: cat_Id, Estabelecimento: est_Id, Imagem: proImagem, Atualizado: proAtualizacao, Descrição: proDescricao}
+            const dados = {nome: proNome, categoria: cat_Id, estabelecimento: est_Id, imagem: proImagem, preço: proPreco, Atualizado: proAtualizacao, descrição: proDescricao}
 
             return response.status(200).json({confirma: 'sucesso',Info: dados, message: idInst})
         } catch(error){

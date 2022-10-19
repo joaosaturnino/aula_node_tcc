@@ -8,6 +8,7 @@ const CidadesController = require('../controllers/cidadesController');
 const CategoriasController = require('../controllers/categoriasController');
 const EstabelecimentosController = require('../controllers/estabelecimentosController');
 const ProdutosController = require('../controllers/produtosController');
+const ProdutosController2 = require('../controllers/produtosController2');
 const LinksController = require('../controllers/linksController');
 const TamanhosController = require('../controllers/tamanhosController');
 const TelefonesController = require('../controllers/telefonesController');
@@ -35,6 +36,12 @@ router.get('/estabelecimentos', EstabelecimentosController.listarEstabelecimento
 //cadastrar
 //editar
 //excluir
+
+
+router.get('/produtos', ProdutosController2.listarProdutos);
+
+
+
 router.get('/produtos', ProdutosController.listarProdutos);
 // router.get('/produtos', ProdutosController.listaProdutos);
 router.post('/produtos', ProdutosController.create)
