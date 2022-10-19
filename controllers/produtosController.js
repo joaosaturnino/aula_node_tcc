@@ -23,7 +23,7 @@ module.exports={
             const valuesCount = [proNomeProd, cat_Id, tamPrato, est_Id, tamPromo];
             const n_prod = await db.query(sqlCount, valuesCount);
 
-            const sql = ('SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, tamPreco, tamPrecoPromo, tamPrato, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId INNER JOIN Tamanhos tm ON proId = tm.pro_Id  Where proNome LIKE ? AND cat_Id LIKE ? AND tamPrato LIKE ? AND est_Id LIKE ? AND tamPromo LIKE ? ORDER BY tamPreco LIMIT ?, ?;');
+            const sql = ('SELECT proId, proNome, cat_Id, estNome, proImagem, proAtualizacao, tamPreco, tamPrecoPromo, tamPrato, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId INNER JOIN Tamanhos tm ON proId = tm.pro_Id  Where proNome LIKE ? AND cat_Id LIKE ? AND tamPrato LIKE ? AND est_Id LIKE ? AND tamPromo LIKE ? ORDER BY tamPreco LIMIT ?, ?;');
             
             const values = [proNomeProd, cat_Id, tamPrato, est_Id, tamPromo, parseInt(inicio), parseInt(limit)];
             const produtos = await db.query(sql, values);
@@ -44,7 +44,7 @@ module.exports={
         try{
             const {proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao} = request.body;
 
-            const sql = 'INSERT INTO produtos (proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao) VALUES (?, ?, ?, ?, ?, ?)';
+            const sql = ('INSERT INTO produtos (proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao) VALUES (?, ?, ?, ?, ?, ?)');
             const values = [proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao];
             const confirmacao = await db.query(sql, values);
 

@@ -5,7 +5,7 @@ const db = require("../database/connection");
 
 
 module.exports={
-    async listarProdutos(request, response){
+    async listarProdutos2(request, response){
         try{
             const {page = 1, limit = 20} = request.query;
             const inicio = (page -1) * limit;
@@ -22,7 +22,7 @@ module.exports={
             const valuesCount = [proNomeProd, cat_Id, tamPrato, est_Id, tamPromo];
             const n_prod = await db.query(sqlCount, valuesCount);
 
-            const sql = ('SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proPreco, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId Where proNome LIKE ? AND cat_Id LIKE ?  AND est_Id LIKE ?  ORDER BY proPreco LIMIT ?, ?;');
+            const sql = ('SELECT proId, proNome, cat_Id, estNome, proImagem, proAtualizacao, proPreco, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId Where proNome LIKE ? AND cat_Id LIKE ?  AND est_Id LIKE ?  ORDER BY proPreco LIMIT ?, ?;');
             
             const values = [proNomeProd, cat_Id, est_Id,  parseInt(inicio), parseInt(limit)];
             const produtos = await db.query(sql, values);

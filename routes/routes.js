@@ -38,7 +38,7 @@ router.get('/estabelecimentos', EstabelecimentosController.listarEstabelecimento
 //excluir
 
 
-router.get('/produtos', ProdutosController2.listarProdutos);
+//router.get('/produtos2', ProdutosController2.listarProdutos);
 
 
 
