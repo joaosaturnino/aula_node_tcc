@@ -3,6 +3,20 @@
 const { json } = require("express");
 const db = require("../database/connection");
 
+function geraUrl (e) {
+    const estabelecimento = {
+        estId: e.estId,
+        estNome: e.estNome,
+        proImagem: e.proImagem,
+        proAtualizacao: e.proAtualizacao,
+        tamPreco: e.tamPreco,
+        tamPrecoPromo: e.tamPrecoPromo,
+        tamPrato: e.tamPrato,
+        proDescricao: e.proDescricao
+    }
+    return estabelecimento;
+}
+
 module.exports = {
     async listarEstabelecimentos(request, response) {
         try {
