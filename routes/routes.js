@@ -39,7 +39,7 @@ router.delete('/categorias/:catId', CategoriasController.delete)
 
 router.get('/estabelecimentos', EstabelecimentosController.listarEstabelecimentos);
 router.get('/estabelecimentos/:estId', EstabelecimentosController.listarUnicoEstabelecimento);
-router.post('/estabelecimentos', EstabelecimentosController.create);
+router.post('/estabelecimentos', upload.single('img'), EstabelecimentosController.create);
 router.patch('/estabelecimentos/:estId', EstabelecimentosController.update);
 router.delete('/estabelecimentos/:estId', EstabelecimentosController.delete);
 

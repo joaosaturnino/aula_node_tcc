@@ -7,12 +7,10 @@ function geraUrl (e) {
     const estabelecimento = {
         estId: e.estId,
         estNome: e.estNome,
-        proImagem: e.proImagem,
-        proAtualizacao: e.proAtualizacao,
-        tamPreco: e.tamPreco,
-        tamPrecoPromo: e.tamPrecoPromo,
-        tamPrato: e.tamPrato,
-        proDescricao: e.proDescricao
+        estEndereco: e.estEndereco,
+        estLogo: e.estLogo,
+        usuNome: e.estNome,
+        cidNome: e.cidNome
     }
     return estabelecimento;
 }
@@ -24,8 +22,10 @@ module.exports = {
             const estabelecimentos = await db.query(sql);
             //console.log('tam: ' + usuarios[0].length);
             //return response.status(200).json(usuarios[0]);
+
+            const resultado = estabelecimentos[0].map(geraUrl);
            
-            return response.status(200).json({confirma: 'Sucesso', nResults: estabelecimentos[0].length, message: estabelecimentos[0]});
+            return response.status(200).json({confirma: 'Sucesso', nResults: estabelecimentos[0].length, message: resultado});
         } catch (error) {
             return response.status(500).json({confirma: 'Erro', message: error});
         }
@@ -33,9 +33,9 @@ module.exports = {
     async create(request, response){
         try{
             const {estNome, estEndereco, estLogo, usu_Id, cid_Id} = request.body;
-
+            const img = request.file.filename;
             const sql = 'INSERT INTO estabelecimentos (estNome, estEndereco, estLogo, usu_Id, cid_Id) VALUES (?,?,?,?,?);' ;
-            const values = [estNome, estEndereco, estLogo, usu_Id, cid_Id];
+            const values = [estNome, estEndereco, img, parseFloat(usu_Id), parseFloat(id_Id)];
             const confirmacao = await db.query(sql, values);
 
             const estId = confirmacao[0].insertId;
