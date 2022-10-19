@@ -22,7 +22,7 @@ module.exports={
             const valuesCount = [proNomeProd, cat_Id, tamPrato, est_Id, tamPromo];
             const n_prod = await db.query(sqlCount, valuesCount);
 
-            const sql = ('SELECT proId, proNome, cat_Id, estNome, proImagem, proAtualizacao, proPreco, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId Where proNome LIKE ? AND cat_Id LIKE ?  AND est_Id LIKE ?  ORDER BY proPreco LIMIT ?, ?;');
+            const sql = ('SELECT proId, proNome, catNome, estNome, proImagem, proAtualizacao, proPreco, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId Where proNome LIKE ? AND cat_Id LIKE ?  AND est_Id LIKE ?  ORDER BY proPreco LIMIT ?, ?;');
             
             const values = [proNomeProd, cat_Id, est_Id,  parseInt(inicio), parseInt(limit)];
             const produtos = await db.query(sql, values);
@@ -57,20 +57,45 @@ module.exports={
         }
     },
 
-    //     async listaProdutos(request, response) {
-    //     try {
-    //         const sql = 'SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao FROM produtos';
-    //         const produtos = await db.query(sql);
-    //         //console.log('tam: ' + usuarios[0].length);
-    //         //return response.status(200).json(usuarios[0]);
-    //         return response.status(200).json({confirma: 'Sucesso', nResults: produtos[0].length, message: produtos[0]});
-    //     } catch (error) {
-    //         return response.status(500).json({confirma: 'Erro', message: error});
-    //     }
-    // },
+    async update(request, response){
+            try{
+
+                const {proNome, cat_Id, proImagem, proPreco, proAtualizacao, proDescricao} = request.body;
+
+                const {proId} = request.params;
+                
+                const sql = "UPDATE categorias SET proNome = ?, cat_Id = ?, proImagem = ?, proPreco = ?, ProAtualizacao = ?, proDescricao = ? WHERE proId = ?;";
+
+                const values = [proNome, cat_Id, proImagem, proPreco, proAtualizacao, proDescricao, proId];
+
+                const atualização = await db.query(sql, values);
+                
+                return response.status(200).json({Confirma :"Sucesso", message: "Dados Atualizados"})
+            } catch(error){
+                return response.status(500).json({confirma: "Erro", message: error})
+            }
+    },
+    async delete(request, response){
+        try{
+
+            const { proId } = request.params;
+
+            const sql = "DELETE FROM produtos WHERE proId = ?";
+
+            const values = [proId];
+            
+            await db.query(sql, values);
+
+            return response.status(200).json({confirma: 'Sucesso', message: 'Produto ' + proId + ' excluída com sucesso'})
+        }catch(error){
+            return response.status(500).json({confirma:'Erro', message: error})
+        }
+    }
+
+};
 
 
-}
+
 
 
 
@@ -139,6 +164,18 @@ module.exports={
 //     }
 
 // };
+
+ //     async listaProdutos(request, response) {
+    //     try {
+    //         const sql = 'SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao FROM produtos';
+    //         const produtos = await db.query(sql);
+    //         //console.log('tam: ' + usuarios[0].length);
+    //         //return response.status(200).json(usuarios[0]);
+    //         return response.status(200).json({confirma: 'Sucesso', nResults: produtos[0].length, message: produtos[0]});
+    //     } catch (error) {
+    //         return response.status(500).json({confirma: 'Erro', message: error});
+    //     }
+    // },
 
 
 
