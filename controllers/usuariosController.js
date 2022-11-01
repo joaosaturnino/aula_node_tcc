@@ -80,6 +80,8 @@ module.exports = {
             return response.status(500).json({confirma: 'Erro', message: error});
         }
     },
+
+    
     async session(request, response) {
         try{
             const { login, senha } = request.body;
