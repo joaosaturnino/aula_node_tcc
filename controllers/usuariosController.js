@@ -17,15 +17,15 @@ module.exports = {
     },*/
     async create(request, response) {
         try {
-            const {usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao } = request.body;
+            const {usuNome, usuEmail, usuSenha, usuDocumento} = request.body;
             const salt = bcrypt.genSaltSync(10);
             const hash = bcrypt.hashSync(usuSenha, salt);
 
-            const sql = 'INSERT INTO USUARIOS (usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao) VALUES (?, ?, ?, ?, ?, ?);';
-            const values = [usuNome, usuEmail, hash, usuTipo, usuDocumento, usuModeracao];
+            const sql = 'INSERT INTO USUARIOS (usuNome, usuEmail, usuSenha, usuDocumento) VALUES (?, ?, ?, ?);';
+            const values = [usuNome, usuEmail, hash, usuDocumento];
             const confirmacao = await db.query(sql, values);
             const usuId = confirmacao[0].insertId;
-            const dados = {id: usuId, nome: usuNome, email: usuEmail, documento: usuDocumento, tipo: usuTipo, moderacao: usuModeracao};
+            const dados = {id: usuId, nome: usuNome, email: usuEmail, senha: usuSenha, documento: usuDocumento};
             return response.status(200).json({confirma: 'Sucesso', message: dados});
         }catch(error){
             return response.status(500).json({confirma: 'Erro', message: error});
@@ -72,9 +72,9 @@ module.exports = {
     async listarUsuarios(request, response) {
         try {
             const { usuId } = request.params;
-            const sql = 'SELECT usuId, usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao FROM usuarios;';
-            const values = [usuId];
-            const usuario = await db.query(sql, values);
+            const sql = 'SELECT usuId, usuNome, usuEmail, usuSenha, usuDocumento FROM usuarios;';
+            //const values = [usuId];
+            const usuario = await db.query(sql);
             return response.status(200).json({confirma: 'Sucesso', message: usuario[0]});
         }catch (error) {
             return response.status(500).json({confirma: 'Erro', message: error});
@@ -84,12 +84,12 @@ module.exports = {
         try{
             const { login, senha } = request.body;
 
-            const sql = 'SELECT usuId, usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao FROM usuarios WHERE usuEmail = ?;';
+            const sql = 'SELECT usuId, usuNome, usuEmail, usuSenha, usuDocumento FROM usuarios WHERE usuEmail = ?;';
             const values = [login];
             const usuario = await db.query(sql, values);
-
-            if (usuario[0].length ===0) {
-                return response.status(200).json({confirma: 'Erro', message: 'E-mail não existe!'});
+     
+            if (usuario[0].length === 0) {
+                return response.status(200).json({confirma: false, message: 'E-mail não existe!'});
             }
 
             let logar = bcrypt.compareSync(senha, usuario[0][0].usuSenha);
