@@ -3,13 +3,17 @@
 const { json } = require("express");
 const db = require("../database/connection");
 
-function geraUrl (e) {
+function geraUrl(e) {
     const produto = {
         proId: e.proId,
         proNome: e.proNome,
         cat_Id: e.cat_Id,
         est_Id: e.est_Id,
+<<<<<<< Updated upstream
         proImagem: 'http://10.67.23.143:3333/public/upload/produtos/' + e.proImagem,
+=======
+        proImagem: 'http://10.67.23.168:3333/public/upload/produtos/' + e.proImagem,
+>>>>>>> Stashed changes
         proAtualizacao: e.proAtualizacao,
         tamPreco: e.tamPreco,
         tamPrecoPromo: e.tamPrecoPromo,
@@ -32,21 +36,21 @@ function geraUrl (e) {
 //         }
 //     },
 
-    // async create(request, response){
-    //     try{
-    //         const {proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao} = request.body;
+// async create(request, response){
+//     try{
+//         const {proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao} = request.body;
 
-    //         const sql = 'INSERT INTO produtos (proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao) VALUES (?, ?, ?, ?, ?, ?)';
-    //         const values = [proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao];
-    //         const confirmacao = await db.query(sql, values);
+//         const sql = 'INSERT INTO produtos (proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao) VALUES (?, ?, ?, ?, ?, ?)';
+//         const values = [proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao];
+//         const confirmacao = await db.query(sql, values);
 
-    //         const idInst = confirmacao[0].insertId
+//         const idInst = confirmacao[0].insertId
 
-    //         return response.status(200).json({confirma: 'sucesso', message: idInst})
-    //     } catch(error){
-    //         return response.status(500).json({confirma: 'Erro', message: error})
-    //     }
-    // },
+//         return response.status(200).json({confirma: 'sucesso', message: idInst})
+//     } catch(error){
+//         return response.status(500).json({confirma: 'Erro', message: error})
+//     }
+// },
 //     async update(request, response){
 //         try{
 //             // Paraetros passados via corpo da requisição 
@@ -74,7 +78,7 @@ function geraUrl (e) {
 //             const sql = "DELETE FROM produtos WHERE proId = ?";
 
 //             const values = [proId];
-            
+
 //             await db.query(sql, values);
 
 //             return response.status(200).json({confirma: 'Sucesso', message: 'Produto ' + proId + ' excluída com sucesso'})
@@ -85,18 +89,18 @@ function geraUrl (e) {
 
 // };
 
-module.exports={
-    async listarProdutos(request, response){
-        try{
-            const {page = 1, limit = 20} = request.query;
-            const inicio = (page -1) * limit;
+module.exports = {
+    async listarProdutos(request, response) {
+        try {
+            const { page = 1, limit = 20 } = request.query;
+            const inicio = (page - 1) * limit;
 
-            const {proNome = '%%'} = request.body;
-            const {cat_Id = '%%'} = request.body;
-            const {tamPrato = "%%"} = request.body;
-            const {est_Id = "%%"} = request.body;
-            const {tamPromo = "%%"} = request.body;
-            
+            const { proNome = '%%' } = request.body;
+            const { cat_Id = '%%' } = request.body;
+            const { tamPrato = "%%" } = request.body;
+            const { est_Id = "%%" } = request.body;
+            const { tamPromo = "%%" } = request.body;
+
 
             const proNomeProd = proNome === '%%' ? '%%' : '%' + proNome + '%';
 
@@ -105,7 +109,7 @@ module.exports={
             const n_prod = await db.query(sqlCount, valuesCount);
 
             const sql = ('SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, tamPreco, tamPrecoPromo, tamPrato, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId INNER JOIN Tamanhos tm ON proId = tm.pro_Id  Where proNome LIKE ? AND cat_Id LIKE ? AND tamPrato LIKE ? AND est_Id LIKE ? AND tamPromo LIKE ? LIMIT ?, ?;');
-            
+
             const values = [proNomeProd, cat_Id, tamPrato, est_Id, tamPromo, parseInt(inicio), parseInt(limit)];
             const produtos = await db.query(sql, values);
 
@@ -117,15 +121,15 @@ module.exports={
 
             response.header('X-Total-Count', n_prod[0][0].countProd);
             //return response.status(200).json(produtos[0]);
-            return response.status(200).json({confirma:'Sucesso', nResults: produtos[0].length,Total: produtosT[0].length, message: resultado});
-        } catch(error){
-            return response.status(500).json({confirma: 'Erro', message: error}); 
+            return response.status(200).json({ confirma: 'Sucesso', nResults: produtos[0].length, Total: produtosT[0].length, message: resultado });
+        } catch (error) {
+            return response.status(500).json({ confirma: 'Erro', message: error });
         }
     },
 
-    async create(request, response){
-        try{
-            const {proNome, cat_Id, est_Id, proAtualizacao, proImagem, proDescricao} = request.body;
+    async create(request, response) {
+        try {
+            const { proNome, cat_Id, est_Id, proAtualizacao, proImagem, proDescricao } = request.body;
             const img = request.file.filename;
             const sql = 'INSERT INTO produtos (proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao) VALUES (?, ?, ?, ?, ?, ?)';
             const values = [proNome, parseFloat(cat_Id), parseFloat(est_Id), img, proAtualizacao, proDescricao];
@@ -133,11 +137,11 @@ module.exports={
 
             const idInst = confirmacao[0].insertId
 
-            const dados = {nome: proNome, categoria: cat_Id, Estabelecimento: est_Id, Imagem: proImagem, Atualizado: proAtualizacao, Descrição: proDescricao}
+            const dados = { nome: proNome, categoria: cat_Id, Estabelecimento: est_Id, Imagem: proImagem, Atualizado: proAtualizacao, Descrição: proDescricao }
 
-            return response.status(200).json({confirma: 'sucesso',Info: dados, message: idInst})
-        } catch(error){
-            return response.status(500).json({confirma: 'Erro', message: error})
+            return response.status(200).json({ confirma: 'sucesso', Info: dados, message: idInst })
+        } catch (error) {
+            return response.status(500).json({ confirma: 'Erro', message: error })
         }
     },
 
