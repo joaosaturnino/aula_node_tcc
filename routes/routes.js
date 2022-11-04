@@ -20,7 +20,7 @@ const upload = require('../middlewares/uploadimageproduto');
 
 //definição de rotas
 //router.get('/usuarios', UsuariosController.listarUsuarios);
-router.get('/usuarios', UsuariosController.listarUsuarios);
+router.get('/usuarios/:usuId', UsuariosController.listarUsuarios);
 router.post('/usuarios', UsuariosController.create);
 router.patch('/usuarios/:usuId', UsuariosController.update);
 router.delete('/usuarios/:usuId', UsuariosController.delete);

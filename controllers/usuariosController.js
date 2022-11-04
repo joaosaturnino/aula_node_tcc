@@ -17,20 +17,42 @@ module.exports = {
     },*/
     async create(request, response) {
         try {
-            const {usuNome, usuEmail, usuSenha, usuDocumento} = request.body;
+            const {nome, senha, email, documento} = request.body;
             const salt = bcrypt.genSaltSync(10);
-            const hash = bcrypt.hashSync(usuSenha, salt);
+            const hash = bcrypt.hashSync(senha, salt);
 
-            const sql = 'INSERT INTO USUARIOS (usuNome, usuEmail, usuSenha, usuDocumento) VALUES (?, ?, ?, ?);';
-            const values = [usuNome, usuEmail, hash, usuDocumento];
+            const sql = 'INSERT INTO USUARIOS (usuNome, usuSenha, usuEmail, usuDocumento) VALUES (?, ?, ?, ?);';
+            const values = [nome, hash, email, documento];
             const confirmacao = await db.query(sql, values);
             const usuId = confirmacao[0].insertId;
-            const dados = {id: usuId, nome: usuNome, email: usuEmail, senha: usuSenha, documento: usuDocumento};
-            return response.status(200).json({confirma: 'Sucesso', message: dados});
+            const dados = {id: usuId, nome: nome, senha: senha, email: email, documento: documento};
+            return response.status(200).json({confirma: true, message: dados});
         }catch(error){
-            return response.status(500).json({confirma: 'Erro', message: error});
+            return response.status(500).json({confirma: false, message: error});
         }
     },
+    async session(request, response) {
+        try{
+            const { login, senha } = request.body;
+
+            const sql = 'SELECT usuId, usuNome, usuEmail, usuSenha, usuDocumento FROM usuarios WHERE usuEmail = ?;';
+            const values = [login];
+            const usuario = await db.query(sql, values);
+     
+            if (usuario[0].length === 0) {
+                return response.status(200).json({confirma: false, message: 'E-mail não existe!'});
+            }
+
+            let logar = bcrypt.compareSync(senha, usuario[0][0].usuSenha);
+            if (logar == true) {
+                return response.status(200).json({confirma: true, Id: usuario[0][0].usuId, nome: usuario[0][0].usuNome, email: usuario[0][0].usuEmail});
+            }else {
+                return response.status(200).json({confirma: false, message: 'A senha não corresponde!'});
+            }
+        } catch (error) {
+            return response.status(500).json({confirma: 'Erro', message: error});
+        }
+    }, 
     async update(request, response) {
         try {
                 //parametros passados via corpo requiseção
@@ -72,37 +94,17 @@ module.exports = {
     async listarUsuarios(request, response) {
         try {
             const { usuId } = request.params;
-            const sql = 'SELECT usuId, usuNome, usuEmail, usuSenha, usuDocumento FROM usuarios;';
+            const sql = 'SELECT usuId, usuNome, usuEmail, usuSenha, usuDocumento FROM usuarios WHERE usuId = ?;';
+            const values = [usuId]
             //const values = [usuId];
-            const usuario = await db.query(sql);
-            return response.status(200).json({confirma: 'Sucesso', message: usuario[0]});
+            const usuario = await db.query(sql, values);
+            return response.status(200).json({confirma: 'Sucesso', message: usuario[0][0]});
         }catch (error) {
             return response.status(500).json({confirma: 'Erro', message: error});
         }
     },
 
     
-    async session(request, response) {
-        try{
-            const { login, senha } = request.body;
-
-            const sql = 'SELECT usuId, usuNome, usuEmail, usuSenha, usuDocumento FROM usuarios WHERE usuEmail = ?;';
-            const values = [login];
-            const usuario = await db.query(sql, values);
-     
-            if (usuario[0].length === 0) {
-                return response.status(200).json({confirma: false, message: 'E-mail não existe!'});
-            }
-
-            let logar = bcrypt.compareSync(senha, usuario[0][0].usuSenha);
-            if (logar == true) {
-                return response.status(200).json({confirma: true, nome: usuario[0][0].usuNome, tipo: usuario[0][0].usuTipo});
-            }else {
-                return response.status(200).json({confirma: false, message: 'A senha não corresponde!'});
-            }
-        } catch (error) {
-            return response.status(500).json({confirma: 'Erro', message: error});
-        }
-    },  
+ 
     
 };
