@@ -31,6 +31,58 @@ module.exports = {
             return response.status(500).json({ confirma: false, message: error });
         }
     },
+<<<<<<< HEAD
+=======
+    async update(request, response) {
+        try {
+                //parametros passados via corpo requiseção
+            const { usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao } = request.body;
+                //parametros passado via url na chamada da api pelo front end
+            const {usuId} = request.params;
+                //instrução sql para atualização
+            const sql = 'UPDATE USUARIOS SET usuNome = ?, usuEmail = ?, usuSenha = ?, usuTipo = ?, usuDocumento = ?, usuModeracao = ? WHERE usuId = ?;';
+                //definição de array com os parametros que receberam os valores do front-end
+            const values = [usuNome, usuEmail, usuSenha, usuTipo, usuDocumento, usuModeracao, usuId];
+                //executa a instrução de atualização no banco de dados
+            const atualizacao = await db.query(sql, values);
+                //mensagem de retorno no formato json
+            return response.status(200).json({confirma: 'Sucesso', message: 'Dados Atualizados'});
+
+        }catch (error) {
+            return response.status(500).json({confirma: 'Erro', message: error});
+        }
+    },
+    async delete(request, response) {
+        try {
+                //parametro passado via url na chamada da api pelo front-end
+                const { usuId } = request.params;
+                //const usuId = request.headers.authorization; // controle de acesso para execucao das funcoes
+
+                //comando de exclusao
+                const sql = 'DELETE FROM usuarios WHERE usuId = ?';
+                //definicao de array com os parametros que receberem os valores do front-end
+                const values = [ usuId ];
+                //executa a instrucao de exclusao no banco de dados
+                await db.query(sql, values);
+                //mensagem de retorno no formato json;
+                return response.status(200).json({confirma : 'Sucesso', message: 'Mesa com id ' + usuId + ' excluída com sucesso'});
+            }catch (error) {
+                return response.status(500).json({confirma: 'Erro', message: error});
+            }
+                
+    },
+    async listarUsuarios(request, response) {
+        try {
+            const { usuId } = request.params;
+            const sql = 'SELECT usuId, usuNome, usuEmail, usuSenha, usuDocumento FROM usuarios;';
+            //const values = [usuId];
+            const usuario = await db.query(sql);
+            return response.status(200).json({confirma: 'Sucesso', message: usuario[0]});
+        }catch (error) {
+            return response.status(500).json({confirma: 'Erro', message: error});
+        }
+    },
+>>>>>>> parent of d1d37b5 (Commit de confirmação)
     async session(request, response) {
         try {
             const { login, senha } = request.body;
