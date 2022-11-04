@@ -9,11 +9,7 @@ function geraUrl(e) {
         proNome: e.proNome,
         cat_Id: e.cat_Id,
         est_Id: e.est_Id,
-<<<<<<< Updated upstream
         proImagem: 'http://10.67.23.143:3333/public/upload/produtos/' + e.proImagem,
-=======
-        proImagem: 'http://10.67.23.168:3333/public/upload/produtos/' + e.proImagem,
->>>>>>> Stashed changes
         proAtualizacao: e.proAtualizacao,
         tamPreco: e.tamPreco,
         tamPrecoPromo: e.tamPrecoPromo,
