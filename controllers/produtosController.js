@@ -11,9 +11,7 @@ function geraUrl(e) {
         est_Id: e.est_Id,
         proImagem: 'http://10.67.23.228:3333/public/upload/produtos/' + e.proImagem,
         proAtualizacao: e.proAtualizacao,
-        tamPreco: e.tamPreco,
-        tamPrecoPromo: e.tamPrecoPromo,
-        tamPrato: e.tamPrato,
+        proPreco: e.proPreco,
         proDescricao: e.proDescricao
     }
     return produto;
@@ -93,20 +91,18 @@ module.exports = {
 
             const { proNome = '%%' } = request.body;
             const { cat_Id = '%%' } = request.body;
-            const { tamPrato = "%%" } = request.body;
             const { est_Id = "%%" } = request.body;
-            const { tamPromo = "%%" } = request.body;
 
 
             const proNomeProd = proNome === '%%' ? '%%' : '%' + proNome + '%';
 
-            const sqlCount = ('SELECT COUNT(*) AS countProd FROM produtos p INNER JOIN Tamanhos tm ON p.proId = tm.pro_Id WHERE p.proNome LIKE ? AND p.cat_Id LIKE ? AND tm.tamPrato LIKE ? AND p.est_Id LIKE ? AND tm.tamPromo LIKE ?;');
-            const valuesCount = [proNomeProd, cat_Id, tamPrato, est_Id, tamPromo];
+            const sqlCount = ('SELECT COUNT(*) AS countProd FROM produtos WHERE proNome LIKE ? AND cat_Id LIKE ? AND est_Id LIKE ?;');
+            const valuesCount = [proNomeProd, cat_Id, est_Id];
             const n_prod = await db.query(sqlCount, valuesCount);
 
-            const sql = ('SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, tamPreco, tamPrecoPromo, tamPrato, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId INNER JOIN Tamanhos tm ON proId = tm.pro_Id  Where proNome LIKE ? AND cat_Id LIKE ? AND tamPrato LIKE ? AND est_Id LIKE ? AND tamPromo LIKE ? LIMIT ?, ?;');
+            const sql = ('SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proPreco, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId Where proNome LIKE ? AND cat_Id LIKE ? AND est_Id LIKE ? ORDER BY proPreco LIMIT ?, ?;');
 
-            const values = [proNomeProd, cat_Id, tamPrato, est_Id, tamPromo, parseInt(inicio), parseInt(limit)];
+            const values = [proNomeProd, cat_Id, est_Id, parseInt(inicio), parseInt(limit)];
             const produtos = await db.query(sql, values);
 
             const sqlT = 'SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao FROM produtos WHERE proNome LIKE ?;';
