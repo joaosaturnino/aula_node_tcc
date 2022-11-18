@@ -92,17 +92,18 @@ module.exports = {
             const { proNome = '%%' } = request.body;
             const { cat_Id = '%%' } = request.body;
             const { est_Id = "%%" } = request.body;
+            const { proDescricao = "%%" } = request.body;
 
 
             const proNomeProd = proNome === '%%' ? '%%' : '%' + proNome + '%';
 
             const sqlCount = ('SELECT COUNT(*) AS countProd FROM produtos WHERE proNome LIKE ? AND cat_Id LIKE ? AND est_Id LIKE ?;');
-            const valuesCount = [proNomeProd, cat_Id, est_Id];
+            const valuesCount = [proNomeProd, cat_Id, est_Id, proDescricao];
             const n_prod = await db.query(sqlCount, valuesCount);
 
-            const sql = ('SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proPreco, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId Where proNome LIKE ? AND cat_Id LIKE ? AND est_Id LIKE ? ORDER BY proPreco LIMIT ?, ?;');
+            const sql = ('SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proPreco, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId Where proNome LIKE ? AND cat_Id LIKE ? AND est_Id LIKE ? AND proDescricao LIKE ? ORDER BY proPreco LIMIT ?, ?;');
 
-            const values = [proNomeProd, cat_Id, est_Id, parseInt(inicio), parseInt(limit)];
+            const values = [proNomeProd, cat_Id, est_Id, proDescricao, parseInt(inicio), parseInt(limit)];
             const produtos = await db.query(sql, values);
 
             const sqlT = 'SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao FROM produtos WHERE proNome LIKE ?;';
