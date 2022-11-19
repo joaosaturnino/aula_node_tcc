@@ -44,7 +44,7 @@ router.patch('/estabelecimentos/:estId', EstabelecimentosController.update);
 router.delete('/estabelecimentos/:estId', EstabelecimentosController.delete);
 
 router.get('/produtos', ProdutosController.listarProdutos);
-// router.get('/produtos/:proId', ProdutosController.listarProduto);
+router.get('/produtosal', ProdutosController.listarAleatorio);
 router.post('/produtos', upload.single('img'), ProdutosController.create)
 // router.patch('/produtos/:proId', ProdutosController.update)
 // router.delete('/produtos/:proId', ProdutosController.delete)

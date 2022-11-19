@@ -9,7 +9,7 @@ function geraUrl(e) {
         proNome: e.proNome,
         cat_Id: e.cat_Id,
         est_Id: e.est_Id,
-        proImagem: 'http://10.67.23.241:3333/public/upload/produtos/' + e.proImagem,
+        proImagem: 'http://10.67.23.88:3333/public/upload/produtos/' + e.proImagem,
         proAtualizacao: e.proAtualizacao,
         proPreco: e.proPreco,
         proDescricao: e.proDescricao
@@ -101,7 +101,7 @@ module.exports = {
             const valuesCount = [proNomeProd, cat_Id, est_Id, proDescricao];
             const n_prod = await db.query(sqlCount, valuesCount);
 
-            const sql = ('SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proPreco, proDescricao FROM produtos Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId Where proNome LIKE ? AND cat_Id LIKE ? AND est_Id LIKE ? AND proDescricao LIKE ? ORDER BY proPreco LIMIT ?, ?;');
+            const sql = ('SELECT pd.proId, pd.proNome, cat.catNome, pd.est_Id, pd.proImagem, pd.proPreco, pd.proDescricao, est.estNome, est.estTelefone, est.estWhatsapp, est.lnk_face, est.lnk_inst, est.lnk_ifood, est.lnk_much, est.lnk_aiqfome FROM produtos pd Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId Where proNome LIKE ? AND cat_Id LIKE ? AND est_Id LIKE ? AND proDescricao LIKE ? ORDER BY proPreco LIMIT ?, ?;');
 
             const values = [proNomeProd, cat_Id, est_Id, proDescricao, parseInt(inicio), parseInt(limit)];
             const produtos = await db.query(sql, values);
@@ -135,6 +135,18 @@ module.exports = {
             return response.status(200).json({ confirma: 'sucesso', Info: dados, message: idInst })
         } catch (error) {
             return response.status(500).json({ confirma: 'Erro', message: error })
+        }
+    },
+        async listarAleatorio(request, response) {
+        try {
+            const sql = 'SELECT pd.proId, pd.proNome, cat.catNome, pd.est_Id, pd.proImagem, pd.proPreco, pd.proDescricao, est.estNome, est.estTelefone, est.estWhatsapp, est.lnk_face, est.lnk_inst, est.lnk_ifood, est.lnk_much, est.lnk_aiqfome FROM produtos pd Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId ORDER BY RAND() LIMIT 10';
+            const produtos = await db.query(sql);
+
+            const resultado = produtos[0].map(geraUrl);
+
+            return response.status(200).json({confirma: 'Sucesso', nResults: produtos[0].length, message: resultado});
+        } catch (error) {
+            return response.status(500).json({confirma: 'Erro', message: error});
         }
     },
 

@@ -2,6 +2,19 @@
 const { json } = require("express");
 const db = require("../database/connection");
 
+function geraUrl(e) {
+    const produto = {
+        usu_id: e.usu_id,
+        pro_id: e.pro_id,
+        proNome: e.proNome,
+        estNome: e.estNome,
+        proImagem: 'http://10.67.23.88:3333/public/upload/produtos/' + e.proImagem,
+        proPreco: e.proPreco,
+        proDescricao: e.proDescricao
+    }
+    return produto;
+}
+
 module.exports = {
     async listarFavoritos(request, response) {
         try {
@@ -19,8 +32,9 @@ module.exports = {
             const valuesCont = [nomeProd, usu_id, pro_id];
             const n_fav = await db.query(sqlCount, valuesCont);
 
-            const sqlCampos = ('SELECT fv.usu_id, fv.pro_id, fv.favAvaliacao, fv.favFavorito, pd.proNome FROM favoritos fv ');
+            const sqlCampos = ('SELECT fv.usu_id, fv.pro_id, pd.proNome, estNome, proImagem, proPreco, proDescricao FROM favoritos fv ');
             const sqlJoin = ('INNER JOIN produtos pd ON fv.pro_id = pd.proid ');
+            const sqlJoin2 = ('INNER JOIN produtos es ON pd.est_Id = es.estId ');
             const sqlFiltro = ('WHERE pd.proNome like ? AND fv.pro_id like ? LIMIT 0, 10;');
             const values = [nomeProd, pro_id, parseInt(inicio), parseInt(limit)];
             const favoritos = await db.query(sqlCampos + sqlJoin + sqlFiltro, values);
