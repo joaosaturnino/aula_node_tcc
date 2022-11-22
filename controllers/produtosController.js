@@ -9,10 +9,20 @@ function geraUrl(e) {
         proNome: e.proNome,
         cat_Id: e.cat_Id,
         est_Id: e.est_Id,
-        proImagem: 'http://10.67.23.88:3333/public/upload/produtos/' + e.proImagem,
+        proImagem: 'http://10.67.23.145:3333/public/upload/produtos/' + e.proImagem,
         proAtualizacao: e.proAtualizacao,
         proPreco: e.proPreco,
-        proDescricao: e.proDescricao
+        proDescricao: e.proDescricao,
+        estNome: e.estNome,
+        estTelefone: e.estTelefone,
+        estEndereco: e.estEndereco,
+        estWhatsapp: e.estWhatsapp,
+        lnk_face: e.est_face,
+        lnk_inst: e.lnk_inst,
+        lnk_ifood: e.lnk_ifood,
+        lnk_much: e.lnk_much,
+        lnk_aiqfome: e.lnk_aiqfome,
+        tamNome: e.tamNome
     }
     return produto;
 }
@@ -101,7 +111,7 @@ module.exports = {
             const valuesCount = [proNomeProd, cat_Id, est_Id, proDescricao];
             const n_prod = await db.query(sqlCount, valuesCount);
 
-            const sql = ('SELECT pd.proId, pd.proNome, cat.catNome, pd.est_Id, pd.proImagem, pd.proPreco, pd.proDescricao, est.estNome, est.estTelefone, est.estWhatsapp, est.lnk_face, est.lnk_inst, est.lnk_ifood, est.lnk_much, est.lnk_aiqfome FROM produtos pd Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId Where proNome LIKE ? AND cat_Id LIKE ? AND est_Id LIKE ? AND proDescricao LIKE ? ORDER BY proPreco LIMIT ?, ?;');
+            const sql = ('SELECT pd.proId, pd.proNome, cat.catNome, pd.est_Id, pd.proImagem, pd.proPreco, pd.proDescricao, est.estNome, est.estTelefone, est.estWhatsapp, est.lnk_face, est.lnk_inst, est.lnk_ifood, est.lnk_much, est.lnk_aiqfome, tm.tamNome FROM produtos pd Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId INNER JOIN Tamanhos tm ON pd.tam_Id = tm.tamId Where proNome LIKE ? AND cat_Id LIKE ? AND est_Id LIKE ? AND proDescricao LIKE ? ORDER BY proPreco LIMIT ?, ?;');
 
             const values = [proNomeProd, cat_Id, est_Id, proDescricao, parseInt(inicio), parseInt(limit)];
             const produtos = await db.query(sql, values);
@@ -139,7 +149,7 @@ module.exports = {
     },
         async listarAleatorio(request, response) {
         try {
-            const sql = 'SELECT pd.proId, pd.proNome, cat.catNome, pd.est_Id, pd.proImagem, pd.proPreco, pd.proDescricao, est.estNome, est.estTelefone, est.estWhatsapp, est.lnk_face, est.lnk_inst, est.lnk_ifood, est.lnk_much, est.lnk_aiqfome FROM produtos pd Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId ORDER BY RAND() LIMIT 10';
+            const sql = 'SELECT pd.proId, pd.proNome, cat.catNome, pd.est_Id, pd.proImagem, pd.proPreco, pd.proDescricao, est.estNome, est.estTelefone, est.estWhatsapp, est.lnk_face, est.lnk_inst, est.lnk_ifood, est.lnk_much, est.lnk_aiqfome, tm.tamNome FROM produtos pd Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId INNER JOIN Tamanhos tm ON pd.tam_Id = tm.tamId ORDER BY RAND() LIMIT 10';
             const produtos = await db.query(sql);
 
             const resultado = produtos[0].map(geraUrl);

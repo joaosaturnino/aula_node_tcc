@@ -7,10 +7,22 @@ function geraUrl(e) {
         usu_id: e.usu_id,
         pro_id: e.pro_id,
         proNome: e.proNome,
-        estNome: e.estNome,
-        proImagem: 'http://10.67.23.88:3333/public/upload/produtos/' + e.proImagem,
+        cat_Id: e.cat_Id,
+        est_Id: e.est_Id,
+        proImagem: 'http://10.67.23.145:3333/public/upload/produtos/' + e.proImagem,
+        proAtualizacao: e.proAtualizacao,
         proPreco: e.proPreco,
-        proDescricao: e.proDescricao
+        proDescricao: e.proDescricao,
+        estNome: e.estNome,
+        estTelefone: e.estTelefone,
+        estEndereco: e.estEndereco,
+        estWhatsapp: e.estWhatsapp,
+        lnk_face: e.est_face,
+        lnk_inst: e.lnk_inst,
+        lnk_ifood: e.lnk_ifood,
+        lnk_much: e.lnk_much,
+        lnk_aiqfome: e.lnk_aiqfome,
+        tamNome: e.tamNome
     }
     return produto;
 }
@@ -19,27 +31,19 @@ module.exports = {
     async listarFavoritos(request, response) {
         try {
 
-            const {page = 1, limit = 20} = request.query;
-            const inicio = (page -1) * limit;
 
-            const {usu_id = '%%'} = request.body;
-            const {pro_id = '%%'} = request.body;
-            const {proNome = '%%'} = request.body;
 
-            const nomeProd = proNome === '%%' ? '%%' : '%' + proNome + '%';
+            const {usu_id} = request.params;
 
-            const sqlCount = ('SELECT COUNT(*) AS pro_id FROM favoritos WHERE usu_id like ? AND pro_id like ?;');
-            const valuesCont = [nomeProd, usu_id, pro_id];
-            const n_fav = await db.query(sqlCount, valuesCont);
 
-            const sqlCampos = ('SELECT fv.usu_id, fv.pro_id, pd.proNome, estNome, proImagem, proPreco, proDescricao FROM favoritos fv ');
-            const sqlJoin = ('INNER JOIN produtos pd ON fv.pro_id = pd.proid ');
-            const sqlJoin2 = ('INNER JOIN produtos es ON pd.est_Id = es.estId ');
-            const sqlFiltro = ('WHERE pd.proNome like ? AND fv.pro_id like ? LIMIT 0, 10;');
-            const values = [nomeProd, pro_id, parseInt(inicio), parseInt(limit)];
-            const favoritos = await db.query(sqlCampos + sqlJoin + sqlFiltro, values);
+            // const sqlCount = ('SELECT COUNT(*) AS pro_id FROM favoritos WHERE usu_id like ? AND pro_id like ?;');
+            // const valuesCont = [nomeProd, usu_id, pro_id];
+            // const n_fav = await db.query(sqlCount, valuesCont);
 
-            response.header('X-Total-Count', n_fav[0][0].cont_fav);
+            const sql = ('SELECT pd.proId, pd.proNome, cat.catNome, pd.est_Id, pd.proImagem, pd.proPreco, pd.proDescricao, est.estNome, est.estTelefone, est.estEndereco, est.estWhatsapp, est.lnk_face, est.lnk_inst, est.lnk_ifood, est.lnk_much, est.lnk_aiqfome, tm.tamNome, fv.pro_id, fv.usu_id FROM Favoritos fv Inner join Produtos pd ON fv.pro_id = pd.proId INNER JOIN Tamanhos tm ON pd.tam_Id = tm.tamId INNER JOIN Categorias cat ON pd.cat_Id = cat.catId INNER JOIN Estabelecimentos est ON pd.est_Id = est.estId WHERE fv.usu_Id = ?;');
+            const values = [usu_id];
+            const favoritos = await db.query(sql, values);
+
             return response.status(200).json({confirma: 'Sucesso', nResults: favoritos[0].length, message: favoritos[0]});
             /*const sql = 'SELECT usu_id, pro_id, favAvaliacao, favFavorito FROM favoritos;';
             const favoritos = await db.query(sql);

@@ -76,7 +76,7 @@ router.get('/proding', ProdIngController.listarProdIng);
 router.post('/proding', ProdIngController.create)
 router.patch('/proding/:pro_id', ProdIngController.update)
 //excluir
-router.get('/favoritos', FavoritosController.listarFavoritos);
+router.get('/favoritos/:usu_id', FavoritosController.listarFavoritos);
 router.post('/favoritos', FavoritosController.create);
 //editar
 router.delete('/favoritos/:usu_id/:pro_id', FavoritosController.delete);
