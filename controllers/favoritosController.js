@@ -9,7 +9,7 @@ function geraUrl(e) {
         proNome: e.proNome,
         cat_Id: e.cat_Id,
         est_Id: e.est_Id,
-        proImagem: 'http://10.67.23.132:3333/public/upload/produtos/' + e.proImagem,
+        proImagem: 'http://10.67.23.111:3333/public/upload/produtos/' + e.proImagem,
         proAtualizacao: e.proAtualizacao,
         proPreco: e.proPreco,
         proDescricao: e.proDescricao,
@@ -106,9 +106,9 @@ module.exports = {
             //executa a instrucao de exclusao no banco de dados
             await db.query(sql, values);
             //mensagem de retorno no formato json;
-            return response.status(200).json({confirma : 'Sucesso', message: 'Favorito com id ' + usu_id + ' excluída com sucesso'});
+            return response.status(200).json({confirma : true, message: 'Favorito com id ' + pro_id + ' excluída com sucesso'});
         }catch (error) {
-            return response.status(500).json({confirma: 'Erro', message: error});
+            return response.status(500).json({confirma: false, message: error});
         } 
     },
 
