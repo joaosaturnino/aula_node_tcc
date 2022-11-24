@@ -9,7 +9,7 @@ function geraUrl(e) {
         proNome: e.proNome,
         cat_Id: e.cat_Id,
         est_Id: e.est_Id,
-        proImagem: 'http://10.67.23.111:3333/public/upload/produtos/' + e.proImagem,
+        proImagem: 'http://10.67.23.88:3333/public/upload/produtos/' + e.proImagem,
         proAtualizacao: e.proAtualizacao,
         proPreco: e.proPreco,
         proDescricao: e.proDescricao,
@@ -61,14 +61,14 @@ module.exports = {
             const {usu_id, pro_id} = request.body;
 
             const sql = 'INSERT INTO FAVORITOS (usu_id, pro_id) VALUES (?, ?);';
-            const values = [usu_id, pro_id, favAvaliacao, favFavorito];
+            const values = [usu_id, pro_id];
             const confirmacao = await db.query(sql, values);
             const usuid = confirmacao[0].insertId;
             const proid = confirmacao[0].insertId;
             const dados = {usu_id, pro_id};
-            return response.status(200).json({confirma: 'Sucesso', message: dados});
+            return response.status(200).json({confirma: true, message: dados});
         }catch(error){
-            return response.status(500).json({confirma: 'Erro', message: error});
+            return response.status(500).json({confirma: false, message: error});
         }
     },
     async update(request, response) {
