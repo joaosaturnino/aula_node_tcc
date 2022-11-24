@@ -58,16 +58,15 @@ module.exports = {
     },
     async create(request, response) {
         try {
-            const {usu_id, pro_id, favAvaliacao, favFavorito } = request.body;
+            const {usu_id, pro_id} = request.body;
 
-            const sql = 'INSERT INTO FAVORITOS (usu_id, pro_id, favAvaliacao, favFavorito) VALUES (?, ?, ?, ?);';
+            const sql = 'INSERT INTO FAVORITOS (usu_id, pro_id) VALUES (?, ?);';
             const values = [usu_id, pro_id, favAvaliacao, favFavorito];
             const confirmacao = await db.query(sql, values);
             const usuid = confirmacao[0].insertId;
             const proid = confirmacao[0].insertId;
-            const dados = {usu_id, pro_id, favAvaliacao, favFavorito};
+            const dados = {usu_id, pro_id};
             return response.status(200).json({confirma: 'Sucesso', message: dados});
-            //return response.status(200).json({confirma: 'Sucesso', message: proid});
         }catch(error){
             return response.status(500).json({confirma: 'Erro', message: error});
         }
