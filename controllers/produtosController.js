@@ -57,7 +57,7 @@ module.exports = {
             const resultado = produtos[0].map(geraUrl);
 
             response.header('X-Total-Count', n_prod[0][0].countProd);
-            //return response.status(200).json(produtos[0]);
+
             return response.status(200).json({ confirma: 'Sucesso', nResults: produtos[0].length, Total: produtosT[0].length, message: resultado });
         } catch (error) {
             return response.status(500).json({ confirma: 'Erro', message: error });

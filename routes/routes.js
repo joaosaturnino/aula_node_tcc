@@ -2,7 +2,6 @@ const db = require("../database/connection");
 const express = require('express');
 const router = express.Router();
 
-//importação dos controllers utilizados nas rotas:
 const UsuariosController = require('../controllers/usuariosController');
 const CategoriasController = require('../controllers/categoriasController');
 const EstabelecimentosController = require('../controllers/estabelecimentosController');
@@ -12,9 +11,6 @@ const FavoritosController = require('../controllers/favoritosController');
 
 const upload = require('../middlewares/uploadimageproduto');
 
-
-//definição de rotas
-//router.get('/usuarios', UsuariosController.listarUsuarios);
 router.get('/usuarios/:usuId', UsuariosController.listarUsuarios);
 router.post('/usuarios', UsuariosController.create);
 router.patch('/usuarios/:usuId', UsuariosController.update);
@@ -34,19 +30,15 @@ router.post('/estabelecimentos', upload.single('img'), EstabelecimentosControlle
 router.patch('/estabelecimentos/:estId', EstabelecimentosController.update);
 router.delete('/estabelecimentos/:estId', EstabelecimentosController.delete);
 
+
 router.get('/produtos', ProdutosController.listarProdutos);
 router.get('/produtosal', ProdutosController.listarAleatorio);
 router.post('/produtos', upload.single('img'), ProdutosController.create)
-// router.patch('/produtos/:proId', ProdutosController.update)
-// router.delete('/produtos/:proId', ProdutosController.delete)
 
 
 router.get('/tamanhos', TamanhosController.listarTamanhos);
 router.post('/tamanhos', TamanhosController.create);
 router.patch('/tamanhos/:tamId', TamanhosController.update);
-//cadastrar
-//editar
-//excluir
 
 
 router.get('/favoritos/:usu_id', FavoritosController.listarFavoritos);
