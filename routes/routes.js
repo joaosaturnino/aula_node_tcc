@@ -31,7 +31,7 @@ router.patch('/estabelecimentos/:estId', EstabelecimentosController.update);
 router.delete('/estabelecimentos/:estId', EstabelecimentosController.delete);
 
 
-router.get('/produtos', ProdutosController.listarProdutos);
+router.post('/produtos', ProdutosController.listarProdutos);
 router.get('/produtosal', ProdutosController.listarAleatorio);
 router.post('/produtos', upload.single('img'), ProdutosController.create)
 
@@ -43,7 +43,7 @@ router.patch('/tamanhos/:tamId', TamanhosController.update);
 
 router.get('/favoritos/:usu_id', FavoritosController.listarFavoritos);
 router.post('/favoritos', FavoritosController.create);
-//editar
+router.get('/favoritos/:usu_id/:pro_id', FavoritosController.verificarFavoritos);
 router.delete('/favoritos/:usu_id/:pro_id', FavoritosController.delete);
 
 

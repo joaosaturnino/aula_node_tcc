@@ -8,8 +8,9 @@ function geraUrl(e) {
         proId: e.proId,
         proNome: e.proNome,
         cat_Id: e.cat_Id,
+        catNome: e.catNome,
         est_Id: e.est_Id,
-        proImagem: 'http://10.67.23.88:3333/public/upload/produtos/' + e.proImagem,
+        proImagem: 'http://10.67.23.146:3333/public/upload/produtos/' + e.proImagem,
         proAtualizacao: e.proAtualizacao,
         proPreco: e.proPreco,
         proDescricao: e.proDescricao,
@@ -22,7 +23,7 @@ function geraUrl(e) {
         lnk_ifood: e.lnk_ifood,
         lnk_much: e.lnk_much,
         lnk_aiqfome: e.lnk_aiqfome,
-        tamNome: e.tamNome
+        tamNome: e.tamNome,
     }
     return produto;
 }
@@ -40,14 +41,15 @@ module.exports = {
 
 
             const proNomeProd = proNome === '%%' ? '%%' : '%' + proNome + '%';
+            const categoria = cat_Id == 0 ? '%%' : cat_Id
 
             const sqlCount = ('SELECT COUNT(*) AS countProd FROM produtos WHERE proNome LIKE ? AND cat_Id LIKE ? AND est_Id LIKE ?;');
-            const valuesCount = [proNomeProd, cat_Id, est_Id, proDescricao];
+            const valuesCount = [proNomeProd, categoria, est_Id, proDescricao];
             const n_prod = await db.query(sqlCount, valuesCount);
 
             const sql = ('SELECT pd.proId, pd.proNome, cat.catNome, pd.est_Id, pd.proImagem, pd.proPreco, pd.proDescricao, est.estNome, est.estTelefone, est.estWhatsapp, est.lnk_face, est.lnk_inst, est.lnk_ifood, est.lnk_much, est.lnk_aiqfome, tm.tamNome FROM produtos pd Inner join Categorias cat ON cat_Id = cat.catId INNER JOIN Estabelecimentos est ON est_Id = est.estId INNER JOIN Tamanhos tm ON pd.tam_Id = tm.tamId Where proNome LIKE ? AND cat_Id LIKE ? AND est_Id LIKE ? AND proDescricao LIKE ? ORDER BY proPreco LIMIT ?, ?;');
 
-            const values = [proNomeProd, cat_Id, est_Id, proDescricao, parseInt(inicio), parseInt(limit)];
+            const values = [proNomeProd, categoria, est_Id, proDescricao, parseInt(inicio), parseInt(limit)];
             const produtos = await db.query(sql, values);
 
             const sqlT = 'SELECT proId, proNome, cat_Id, est_Id, proImagem, proAtualizacao, proDescricao FROM produtos WHERE proNome LIKE ?;';
