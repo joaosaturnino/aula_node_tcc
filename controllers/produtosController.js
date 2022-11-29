@@ -10,7 +10,7 @@ function geraUrl(e) {
         cat_Id: e.cat_Id,
         catNome: e.catNome,
         est_Id: e.est_Id,
-        proImagem: 'http://10.67.23.146:3333/public/upload/produtos/' + e.proImagem,
+        proImagem: 'http://10.67.23.176:3333/public/upload/produtos/' + e.proImagem,
         proAtualizacao: e.proAtualizacao,
         proPreco: e.proPreco,
         proDescricao: e.proDescricao,
